@@ -1,0 +1,173 @@
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import Logo from "./Logo";
+
+const ForgotPassword = () => {
+  const navigate = useNavigate();
+  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState({ type: '', text: '' });
+  
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm();
+
+  const onSubmit = async (data) => {
+    setLoading(true);
+    setMessage({ type: '', text: '' });
+    
+    try {
+      const res = await fetch("https://localhost:7109/api/ParticipantsForgotPassword/reset", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: data.username,
+          email: data.email,
+          newPassword: data.newPassword,
+        }),
+      });
+
+      let result;
+      const text = await res.text();
+      try {
+        result = JSON.parse(text);
+      } catch {
+        result = { message: text };
+      }
+
+      if (res.ok) {
+        setSuccess(true);
+        setMessage({
+          type: "success",
+          text: result.message || "Password reset successful"
+        });
+        setTimeout(() => {
+          navigate("/plogin");
+        }, 2000);
+      } else {
+        let errorText = "Password reset failed";
+        if (result.message) {
+          errorText = result.message;
+        } else if (result.errors) {
+          // Flatten ASP.NET Core validation errors
+          errorText = Object.values(result.errors).flat().join(" ");
+        } else if (result.title) {
+          errorText = result.title;
+        }
+        setMessage({
+          type: "error",
+          text: errorText
+        });
+      }
+    } catch (error) {
+      setMessage({
+        type: "error",
+        text: "An error occurred while connecting to the server."
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="w-full min-h-screen flex justify-center flex-col items-center relative bg-slate-50 dark:bg-slate-950 font-sans transition-colors duration-500 overflow-hidden">
+      
+      {/* Background Animated Orbs */}
+      <div className="absolute top-[-10%] left-[-10%] w-[50vh] h-[50vh] bg-violet-500/20 dark:bg-violet-500/10 blur-[100px] rounded-full pointer-events-none"></div>
+      <div className="absolute bottom-[-10%] right-[-10%] w-[50vh] h-[50vh] bg-cyan-500/20 dark:bg-fuchsia-500/10 blur-[100px] rounded-full pointer-events-none"></div>
+
+      <div className="mb-8 z-10 cursor-pointer hover:scale-105 transition-transform duration-300">
+        <Logo className="h-16 lg:h-20 drop-shadow-md" />
+      </div>
+
+      <form
+        autoComplete="off"
+        onSubmit={handleSubmit(onSubmit)}
+        className="z-10 w-[90vw] max-w-md flex flex-col justify-center border border-slate-200 dark:border-white/10 rounded-3xl bg-white/80 dark:bg-slate-900/60 backdrop-blur-xl shadow-2xl p-8 lg:p-10"
+      >
+        <div className="text-3xl text-center font-black mb-6 text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-fuchsia-500 dark:from-fuchsia-400 dark:to-cyan-400">
+          Reset Password
+        </div>
+        
+        {message.text && (
+          <div className={`mb-6 p-3 rounded-lg text-sm font-semibold text-center border ${message.type === 'success' ? 'bg-green-50 text-green-700 border-green-200 dark:bg-green-500/10 dark:text-green-400 dark:border-green-500/20' : 'bg-red-50 text-red-700 border-red-200 dark:bg-red-500/10 dark:text-red-400 dark:border-red-500/20'}`}>
+            {message.text}
+          </div>
+        )}
+
+        <div className="flex flex-col gap-5">
+          <div>
+            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Username</label>
+            <input
+              className="w-full h-12 text-slate-900 dark:text-white bg-slate-100 dark:bg-slate-950/50 rounded-xl px-4 border border-slate-200 dark:border-white/10 focus:outline-none focus:border-violet-500 dark:focus:border-fuchsia-500 focus:ring-1 focus:ring-violet-500 dark:focus:ring-fuchsia-500 transition-all shadow-inner"
+              type="text"
+              placeholder="Enter your username"
+              {...register("username", { required: "Username is required" })} 
+            />
+            <p className="h-5 text-red-500 dark:text-red-400 text-xs font-medium mt-1 ml-1">
+              {errors.username?.message}
+            </p>
+          </div>
+          
+          <div>
+            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Email</label>
+            <input
+              className="w-full h-12 text-slate-900 dark:text-white bg-slate-100 dark:bg-slate-950/50 rounded-xl px-4 border border-slate-200 dark:border-white/10 focus:outline-none focus:border-violet-500 dark:focus:border-fuchsia-500 focus:ring-1 focus:ring-violet-500 dark:focus:ring-fuchsia-500 transition-all shadow-inner"
+              type="email"
+              placeholder="Enter your email"
+              {...register("email", { 
+                required: "Email is required",
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: "Invalid email address"
+                }
+              })} 
+            />
+            <p className="h-5 text-red-500 dark:text-red-400 text-xs font-medium mt-1 ml-1">
+              {errors.email?.message}
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">New Password</label>
+            <input
+              className="w-full h-12 text-slate-900 dark:text-white bg-slate-100 dark:bg-slate-950/50 rounded-xl px-4 border border-slate-200 dark:border-white/10 focus:outline-none focus:border-violet-500 dark:focus:border-fuchsia-500 focus:ring-1 focus:ring-violet-500 dark:focus:ring-fuchsia-500 transition-all shadow-inner"
+              type="password"
+              placeholder="Enter new password"
+              {...register("newPassword", { 
+                required: "New Password is required",
+                minLength: { value: 6, message: "Password must be at least 6 characters" }
+              })} 
+            />
+            <p className="h-5 text-red-500 dark:text-red-400 text-xs font-medium mt-1 ml-1">
+              {errors.newPassword?.message}
+            </p>
+          </div>
+        </div>
+
+        <div className="flex justify-center mt-6">
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-4 bg-slate-900 hover:bg-slate-800 dark:bg-violet-600 dark:hover:bg-violet-500 text-white rounded-xl font-bold tracking-wide shadow-lg dark:shadow-[0_0_20px_rgba(124,58,237,0.3)] transition-all transform active:scale-95 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed">
+            {loading ? "Resetting..." : "Reset Password"}
+          </button> 
+        </div>
+
+        <div className="flex justify-center items-center text-sm font-medium text-slate-600 dark:text-slate-400 mt-6 pb-2">
+          Remember your password?
+          <Link to="/plogin" className="text-violet-600 dark:text-cyan-400 font-bold ml-1 hover:underline">
+            Login
+          </Link>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+export default ForgotPassword;
