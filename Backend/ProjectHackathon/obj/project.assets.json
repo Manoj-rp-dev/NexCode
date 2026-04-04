@@ -1492,11 +1492,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "e:\\Project\\ProjectHackathon\\ProjectHackathon\\ProjectHackathon.csproj",
+      "projectUniqueName": "E:\\NexCode\\Backend\\ProjectHackathon\\ProjectHackathon.csproj",
       "projectName": "ProjectHackathon",
-      "projectPath": "e:\\Project\\ProjectHackathon\\ProjectHackathon\\ProjectHackathon.csproj",
+      "projectPath": "E:\\NexCode\\Backend\\ProjectHackathon\\ProjectHackathon.csproj",
       "packagesPath": "C:\\Users\\jmrma\\.nuget\\packages\\",
-      "outputPath": "e:\\Project\\ProjectHackathon\\ProjectHackathon\\obj\\",
+      "outputPath": "E:\\NexCode\\Backend\\ProjectHackathon\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

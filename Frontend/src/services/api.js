@@ -1,4 +1,4 @@
-const BASE_URL = "https://localhost:7109/api";
+const BASE_URL = "http://nexcode.runasp.net/api";
 
 const getHeaders = (isFormData = false) => {
   const headers = {};

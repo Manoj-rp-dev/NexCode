@@ -8,7 +8,7 @@ import { FaProjectDiagram } from "react-icons/fa";
 import './index.css'
 import Footer from './Footer';
 import { IoClose } from "react-icons/io5";
-import defaultProfile from "./assets/defaultProfile.png";
+import defaultProfile from "/defaultProfile.png";
 import toast from 'react-hot-toast';
 import Card from './Card';
 import ApplicationForm from './ApplicationForm';

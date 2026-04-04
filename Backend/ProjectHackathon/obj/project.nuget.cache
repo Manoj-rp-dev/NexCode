@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "mV8udavFa5Y=",
+  "dgSpecHash": "LO9VL96ktwE=",
   "success": true,
-  "projectFilePath": "E:\\Project\\ProjectHackathon\\ProjectHackathon\\ProjectHackathon.csproj",
+  "projectFilePath": "E:\\NexCode\\Backend\\ProjectHackathon\\ProjectHackathon.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\jmrma\\.nuget\\packages\\azure.core\\1.50.0\\azure.core.1.50.0.nupkg.sha512",
     "C:\\Users\\jmrma\\.nuget\\packages\\azure.identity\\1.17.1\\azure.identity.1.17.1.nupkg.sha512",
