@@ -20,6 +20,7 @@ import toast from 'react-hot-toast';
 import Logo from './Forparticipants/Logo';
 import { useTheme } from './ThemeContext';
 import { Sun, Moon, X, Ban, Unlock } from 'lucide-react';
+import { api } from "./services/api";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -55,12 +56,8 @@ const AdminDashboard = () => {
 
   const fetchStats = async () => {
     try {
-      const res = await fetch('https://localhost:7109/api/Admin/Stats', {
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-      });
-      if (res.ok) {
-        setStats(await res.json());
-      }
+      const data = await api.admin.getStats();
+      setStats(data);
     } catch (err) {
       console.error(err);
     }
@@ -68,19 +65,14 @@ const AdminDashboard = () => {
 
   const fetchData = async () => {
     setLoading(true);
-    let endpoint = '';
-    if (activeTab === 'users') endpoint = 'Participants';
-    else if (activeTab === 'hosts') endpoint = 'Hosts';
-    else if (activeTab === 'hackathons') endpoint = 'Hackathons';
-    else if (activeTab === 'approvals') endpoint = 'PendingHosts';
-
+    let data = [];
     try {
-      const res = await fetch(`https://localhost:7109/api/Admin/${endpoint}`, {
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-      });
-      if (res.ok) {
-        setDataList(await res.json());
-      }
+      if (activeTab === 'users') data = await api.admin.getParticipants();
+      else if (activeTab === 'hosts') data = await api.admin.getHosts();
+      else if (activeTab === 'hackathons') data = await api.admin.getHackathons();
+      else if (activeTab === 'approvals') data = await api.admin.getPendingHosts();
+      
+      setDataList(data);
     } catch (err) {
       toast.error('Failed to sync data');
     } finally {
@@ -103,19 +95,15 @@ const AdminDashboard = () => {
     if (!id || !type) return;
 
     try {
-      const res = await fetch(`https://localhost:7109/api/Admin/${type}/${id}`, { 
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-      });
-      if (res.ok) {
-        toast.success(`${type} record terminated`);
-        fetchData();
-        fetchStats();
-      } else {
-        toast.error('Termination failed');
-      }
+      if (type === 'Participant') await api.admin.deleteParticipant(id);
+      else if (type === 'Host') await api.admin.deleteHost(id);
+      else if (type === 'Hackathon') await api.admin.deleteHackathon(id);
+
+      toast.success(`${type} record terminated`);
+      fetchData();
+      fetchStats();
     } catch (err) {
-      toast.error('Security breach: connection lost');
+      toast.error(err.message || 'Termination failed');
     } finally {
       setIsDeleteModalOpen(false);
       setDeleteTarget({ id: null, type: '' });
@@ -124,58 +112,37 @@ const AdminDashboard = () => {
 
   const handleBlock = async (id) => {
     try {
-      const res = await fetch(`https://localhost:7109/api/Admin/BlockHost/${id}`, { 
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-      });
-      if (res.ok) {
-        toast.success('Host terminal restricted');
-        fetchData();
-        fetchStats();
-        if (selectedEntity?.id === id) setSelectedEntity({ ...selectedEntity, isBlocked: true });
-      } else {
-        toast.error('Protocol failed: host still active');
-      }
+      await api.admin.blockHost(id);
+      toast.success('Host terminal restricted');
+      fetchData();
+      fetchStats();
+      if (selectedEntity?.id === id) setSelectedEntity({ ...selectedEntity, isBlocked: true });
     } catch (err) {
-      toast.error('System error during restriction');
+      toast.error(err.message || 'System error during restriction');
     }
   };
 
   const handleUnblock = async (id) => {
     try {
-      const res = await fetch(`https://localhost:7109/api/Admin/UnblockHost/${id}`, { 
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-      });
-      if (res.ok) {
-        toast.success('Host terminal restored');
-        fetchData();
-        fetchStats();
-        if (selectedEntity?.id === id) setSelectedEntity({ ...selectedEntity, isBlocked: false });
-      } else {
-        toast.error('Restore failed');
-      }
+      await api.admin.unblockHost(id);
+      toast.success('Host terminal restored');
+      fetchData();
+      fetchStats();
+      if (selectedEntity?.id === id) setSelectedEntity({ ...selectedEntity, isBlocked: false });
     } catch (err) {
-      toast.error('Connection lost');
+      toast.error(err.message || 'Connection lost');
     }
   };
 
   const handleApprove = async (id) => {
     try {
-      const res = await fetch(`https://localhost:7109/api/Admin/ApproveHost/${id}`, { 
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-      });
-      if (res.ok) {
-        toast.success('Host identity authorized');
-        fetchData();
-        fetchStats();
-        if (selectedEntity?.id === id) setSelectedEntity({ ...selectedEntity, isApproved: true });
-      } else {
-        toast.error('Authorization failed');
-      }
+      await api.admin.approveHost(id);
+      toast.success('Host identity authorized');
+      fetchData();
+      fetchStats();
+      if (selectedEntity?.id === id) setSelectedEntity({ ...selectedEntity, isApproved: true });
     } catch (err) {
-      toast.error('System bypass: approval sync failed');
+      toast.error(err.message || 'System bypass: approval sync failed');
     }
   };
 

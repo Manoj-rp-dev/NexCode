@@ -1,72 +1,48 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "./Logo";
-import { useNavigate } from "react-router-dom";
+import { api } from "../services/api";
 
 
 const Login = () => {
   const navigate = useNavigate();
-  const [Success, setSuccess] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
-  const onSubmit = async (data) => {
-  const res = await fetch("https://localhost:7109/api/ParticipantsLoginCheck/login", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    username: data.username,
-    password: data.password,
-  }),
-});
-
-let result;
-const text = await res.text();
-try {
-  result = JSON.parse(text);
-} catch {
-  result = { message: text };
-}
-
-if (res.ok) {
-  setSuccess(true);
-  localStorage.setItem("token", result.token);
-  localStorage.setItem("role", result.role);
   
-  if (result.role === "admin") {
-    localStorage.setItem("AdminID", result.id);
-    setMessage({
-      type: "success",
-      text: "Root Access Granted"
-    });
-    setTimeout(() => {
-      navigate("/admin-dashboard");
-    }, 1000);
-  } else {
-    localStorage.setItem("ParticipantsID", result.id);
-    setMessage({
-      type: "success",
-      text: result.message || "Login successful"
-    });
-    setTimeout(() => {
-      navigate("/");
-    }, 1000);
-  }
-}
- else {
-  setMessage({
-  type: "error",
-  text: result.message || "Login failed"
-});
-}
-
-};
   const {
     register,
     handleSubmit,
     formState: { errors }
   } = useForm();
+
+  const onSubmit = async (data) => {
+    setMessage({ type: '', text: '' });
+    try {
+      const result = await api.auth.participantLogin({
+        username: data.username,
+        password: data.password,
+      });
+
+      localStorage.setItem("token", result.token);
+      localStorage.setItem("role", result.role);
+      
+      if (result.role === "admin") {
+        localStorage.setItem("AdminID", result.id);
+        setMessage({ type: "success", text: "Root Access Granted" });
+        setTimeout(() => {
+          navigate("/admin-dashboard");
+        }, 1000);
+      } else {
+        localStorage.setItem("ParticipantsID", result.id);
+        setMessage({ type: "success", text: result.message || "Login successful" });
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+      }
+    } catch (error) {
+      setMessage({ type: "error", text: error.message || "Login failed" });
+    }
+  };
 
   return (
     <div className="w-full min-h-screen flex justify-center flex-col items-center relative bg-slate-50 dark:bg-slate-950 font-sans transition-colors duration-500 overflow-hidden">

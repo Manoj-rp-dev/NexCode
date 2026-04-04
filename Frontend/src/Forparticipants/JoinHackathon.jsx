@@ -16,22 +16,17 @@ const JoinHackathon = () => {
   // Extract unique types for the filter dropdown
   const uniqueTypes = ['All', ...new Set(hackathons.map(h => h.hackathonType).filter(Boolean))];
 
-  const [appliedIds, setAppliedIds] = useState([]);
+  const [appliedIds, setAppliedIds] = useState(new Set());
   const [selectedHackathon, setSelectedHackathon] = useState(null);
 
 
   useEffect(() => {
     const fetchHackathons = async () => {
       try {
-        const response = await fetch('https://localhost:7109/api/HackathonList/GetAll');
-        if (response.ok) {
-          const data = await response.json();
-          setHackathons(data);
-        } else {
-          setError('Failed to fetch hackathons.');
-        }
+        const data = await api.hackathons.getAll();
+        setHackathons(data);
       } catch (err) {
-        setError('Error connecting to the server.');
+        setError('Failed to fetch hackathons.');
       } finally {
         setLoading(false);
       }
@@ -41,13 +36,9 @@ const JoinHackathon = () => {
         const id = localStorage.getItem('ParticipantsID');
         if (!id) return;
         try {
-          const res = await fetch(`https://localhost:7109/api/ParticipantDashboard/GetAppliedHackathons/${id}`, {
-            headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-          });
-          if (res.ok) {
-            const data = await res.json();
-            setAppliedIds(data.map(a => Number(a.hackathonId || a.hackathonID)));
-          }
+          const data = await api.participant.getAppliedHackathons(id);
+          const ids = new Set(data.map(h => h.hackathonId || h.hackathonID || h.HostHackathonID));
+          setAppliedIds(ids);
         } catch (err) { /* ignore if not logged in */ }
       };
 

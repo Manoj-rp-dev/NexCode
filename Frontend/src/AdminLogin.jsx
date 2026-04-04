@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import { Shield, Lock, User, ArrowRight, Home } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Logo from './Forparticipants/Logo';
+import { api } from "./services/api";
 
 const AdminLogin = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -14,26 +15,18 @@ const AdminLogin = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      const res = await fetch("https://localhost:7109/api/ParticipantsLoginCheck/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      });
-
-      const result = await res.json();
-      if (res.ok && result.role === 'admin') {
+      const result = await api.auth.participantLogin(data);
+      if (result.role === 'admin') {
         localStorage.setItem("token", result.token);
         localStorage.setItem("AdminID", result.id);
         localStorage.setItem("role", "admin");
         toast.success("Welcome back, Administrator");
         navigate("/admin-dashboard");
-      } else if (res.ok && result.role !== 'admin') {
-        toast.error("Access Denied: This portal is for Administrators only.");
       } else {
-        toast.error(result.message || "Invalid Admin credentials");
+        toast.error("Access Denied: This portal is for Administrators only.");
       }
     } catch (err) {
-      toast.error("Network connection failed");
+      toast.error(err.message || "Invalid Admin credentials");
     } finally {
       setLoading(false);
     }

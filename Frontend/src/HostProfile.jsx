@@ -62,6 +62,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from "framer-motion";
 import toast from 'react-hot-toast';
+import { api } from "./services/api";
 
 const HostProfile = () => {
   const navigate = useNavigate();
@@ -138,20 +139,13 @@ const HostProfile = () => {
   const fetchDashboardData = async () => {
     setLoading(true);
     try {
-      const [profileRes, hackathonsRes, statsRes] = await Promise.all([
-        fetch(`https://localhost:7109/api/HostDashboard/GetProfile/${hostId}`, {
-          headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-        }),
-        fetch(`https://localhost:7109/api/HostDashboard/GetMyHackathons/${hostId}`, {
-          headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-        }),
-        fetch(`https://localhost:7109/api/HostDashboard/GetDashboardStats/${hostId}`, {
-          headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-        })
+      const [data, hackathons, s] = await Promise.all([
+        api.host.getProfile(hostId),
+        api.host.getMyHackathons(hostId),
+        api.host.getDashboardStats(hostId)
       ]);
 
-      if (profileRes.ok) {
-        const data = await profileRes.json();
+      if (data) {
         setProfile(data);
         setEditForm({
             HostName: data.hostName || "",
@@ -167,13 +161,11 @@ const HostProfile = () => {
         }
       }
 
-      if (hackathonsRes.ok) {
-        const hackathons = await hackathonsRes.json();
+      if (hackathons) {
         setMyHackathons(hackathons);
       }
 
-      if (statsRes.ok) {
-        const s = await statsRes.json();
+      if (s) {
         setStats({
           totalHackathons: s.totalHackathons || 0,
           totalApplicants: s.totalApplicants || 0,
@@ -190,12 +182,8 @@ const HostProfile = () => {
   const fetchGlobalTalent = async () => {
     setLoadingTalent(true);
     try {
-      const res = await fetch(`https://localhost:7109/api/HostDashboard/GetAllApplicants/${hostId}`, {
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-      });
-      if (res.ok) {
-        setGlobalTalent(await res.json());
-      }
+      const data = await api.host.getAllApplicants(hostId);
+      setGlobalTalent(data);
     } catch (err) {
       console.error(err);
     } finally {
@@ -205,12 +193,8 @@ const HostProfile = () => {
 
   const fetchNotifications = async () => {
     try {
-      const res = await fetch(`https://localhost:7109/api/HostDashboard/GetNotifications/${hostId}`, {
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-      });
-      if (res.ok) {
-        setNotifications(await res.json());
-      }
+      const data = await api.host.getNotifications(hostId);
+      setNotifications(data);
     } catch (err) {
       console.error(err);
     }
@@ -218,14 +202,9 @@ const HostProfile = () => {
 
   const clearNotifications = async () => {
     try {
-      const res = await fetch(`https://localhost:7109/api/HostDashboard/ClearNotifications/${hostId}`, {
-        method: "POST",
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-      });
-      if (res.ok) {
-        setNotifications([]);
-        toast.success("Intelligence logs cleared");
-      }
+      await api.host.clearNotifications(hostId);
+      setNotifications([]);
+      toast.success("Intelligence logs cleared");
     } catch (err) {
       console.error(err);
     }
@@ -235,12 +214,8 @@ const HostProfile = () => {
     setSelectedHackathon(hackathon);
     setLoadingApplicants(true);
     try {
-      const res = await fetch(`https://localhost:7109/api/HostDashboard/GetApplicants/${hackathon.hackathonID}`, {
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-      });
-      if (res.ok) {
-        setApplicants(await res.json());
-      }
+      const data = await api.host.getApplicants(hackathon.hackathonID);
+      setApplicants(data);
     } catch (err) {
       console.error(err);
     } finally {
@@ -254,30 +229,18 @@ const HostProfile = () => {
     const newStatus = !currentStatus;
     
     try {
-      const res = await fetch(`https://localhost:7109/api/HostDashboard/UpdateWinnerStatus`, {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify({ applicationId: appId, status: newStatus })
-      });
-      if (res.ok) {
-        setApplicants(prev => prev.map(a => {
-          const aId = a.applicationId || a.ApplicationId || a.ApplicationID;
-          if (aId === appId) {
-            return { ...a, isWinner: newStatus, IsWinner: newStatus };
-          }
-          return a;
-        }));
-        toast.success(newStatus ? "Champion Identity Verified" : "Victory Revoked");
-      } else {
-        const errorText = await res.text();
-        toast.error(`Terminal Error: ${res.status} ${errorText || res.statusText}`);
-      }
+      await api.host.updateWinnerStatus({ applicationId: appId, status: newStatus });
+      setApplicants(prev => prev.map(a => {
+        const aId = a.applicationId || a.ApplicationId || a.ApplicationID;
+        if (aId === appId) {
+          return { ...a, isWinner: newStatus, IsWinner: newStatus };
+        }
+        return a;
+      }));
+      toast.success(newStatus ? "Champion Identity Verified" : "Victory Revoked");
     } catch (err) {
       console.error(err);
-      toast.error(`Network Transmission Failure: ${err.message}`);
+      toast.error(`Terminal Error: ${err.message}`);
     }
   };
 
@@ -287,60 +250,36 @@ const HostProfile = () => {
     const newStatus = !currentStatus;
 
     try {
-      const res = await fetch(`https://localhost:7109/api/HostDashboard/UpdateParticipationStatus`, {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify({ applicationId: appId, status: newStatus })
-      });
-      if (res.ok) {
-        setApplicants(prev => prev.map(a => {
-          const aId = a.applicationId || a.ApplicationId || a.ApplicationID;
-          if (aId === appId) {
-            return { ...a, hasParticipated: newStatus, HasParticipated: newStatus };
-          }
-          return a;
-        }));
-        toast.success(newStatus ? "Participation Logged" : "Participation Reset");
-      } else {
-        const errorText = await res.text();
-        toast.error(`Terminal Error: ${res.status} ${errorText || res.statusText}`);
-      }
+      await api.host.updateParticipationStatus({ applicationId: appId, status: newStatus });
+      setApplicants(prev => prev.map(a => {
+        const aId = a.applicationId || a.ApplicationId || a.ApplicationID;
+        if (aId === appId) {
+          return { ...a, hasParticipated: newStatus, HasParticipated: newStatus };
+        }
+        return a;
+      }));
+      toast.success(newStatus ? "Participation Logged" : "Participation Reset");
     } catch (err) {
       console.error(err);
-      toast.error(`Network Transmission Failure: ${err.message}`);
+      toast.error(`Terminal Error: ${err.message}`);
     }
   };
 
   const updateStatus = async (app, newStatus) => {
     const appId = app.applicationId || app.ApplicationId || app.ApplicationID;
     try {
-      const res = await fetch(`https://localhost:7109/api/HostDashboard/UpdateApplicationStatus`, {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify({ applicationId: appId, status: newStatus })
-      });
-      if (res.ok) {
-        setApplicants(prev => prev.map(a => {
-          const aId = a.applicationId || a.ApplicationId || a.ApplicationID;
-          if (aId === appId) {
-            return { ...a, status: newStatus, Status: newStatus };
-          }
-          return a;
-        }));
-        toast.success(`Application ${newStatus}`);
-      } else {
-        const errorText = await res.text();
-        toast.error(`Terminal Error: ${res.status} ${errorText || res.statusText}`);
-      }
+      await api.host.updateApplicationStatus({ applicationId: appId, status: newStatus });
+      setApplicants(prev => prev.map(a => {
+        const aId = a.applicationId || a.ApplicationId || a.ApplicationID;
+        if (aId === appId) {
+          return { ...a, status: newStatus, Status: newStatus };
+        }
+        return a;
+      }));
+      toast.success(`Application ${newStatus}`);
     } catch (err) {
       console.error(err);
-      toast.error(`Network Transmission Failure: ${err.message}`);
+      toast.error(`Terminal Error: ${err.message}`);
     }
   };
 
@@ -352,18 +291,11 @@ const HostProfile = () => {
   const confirmDeleteHackathon = async () => {
     if (!idToDelete) return;
     try {
-      const res = await fetch(`https://localhost:7109/api/HostHackathon/DeleteHackathon/${idToDelete}`, { 
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-      });
-      if (res.ok) {
-        setMyHackathons(prev => prev.filter(h => h.hackathonID !== idToDelete));
-        toast.success("Protocol Terminated Successfully");
-      } else {
-        toast.error("Deletion Sequence Failed");
-      }
+      await api.hackathons.delete(idToDelete);
+      setMyHackathons(prev => prev.filter(h => h.hackathonID !== idToDelete));
+      toast.success("Protocol Terminated Successfully");
     } catch (err) {
-      toast.error("Network Error");
+      toast.error(err.message || "Deletion Sequence Failed");
     } finally {
       setIsDeleteModalOpen(false);
       setIdToDelete(null);
@@ -373,22 +305,11 @@ const HostProfile = () => {
   const toggleBlock = async (h) => {
     const newStatus = !h.isBlocked;
     try {
-      const res = await fetch(`https://localhost:7109/api/HostHackathon/ToggleBlockHackathon/${h.hackathonID}`, {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify(newStatus)
-      });
-      if (res.ok) {
-        setMyHackathons(prev => prev.map(item => item.hackathonID === h.hackathonID ? { ...item, isBlocked: newStatus } : item));
-        toast.success(newStatus ? "Protocol Hiden from Public Grid" : "Protocol Restored to Public Grid");
-      } else {
-        toast.error("Status Update Failed");
-      }
+      await api.hackathons.toggleBlock(h.hackathonID, newStatus);
+      setMyHackathons(prev => prev.map(item => item.hackathonID === h.hackathonID ? { ...item, isBlocked: newStatus } : item));
+      toast.success(newStatus ? "Protocol Hiden from Public Grid" : "Protocol Restored to Public Grid");
     } catch (err) {
-      toast.error("Network Error");
+      toast.error(err.message || "Status Update Failed");
     }
   };
 
@@ -460,18 +381,13 @@ const HostProfile = () => {
     if (profileImageFile) formData.append("profileImage", profileImageFile);
 
     try {
-      const res = await fetch(`https://localhost:7109/api/HostDashboard/UpdateProfile`, {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
-        body: formData
-      });
-      if (res.ok) {
-        toast.success("Security Policy Updated");
-        setIsEditDrawerOpen(false);
-        fetchDashboardData();
-      }
+      await api.host.updateProfile(formData);
+      toast.success("Security Policy Updated");
+      setIsEditDrawerOpen(false);
+      fetchDashboardData();
     } catch (err) {
       console.error(err);
+      toast.error(err.message || "Profile update failed");
     }
   };
 

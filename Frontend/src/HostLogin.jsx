@@ -5,76 +5,53 @@ import Logo from "./Forparticipants/Logo";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Timer } from "lucide-react";
+import { api } from "./services/api";
 
 
 
 const HostLogin = () => {
   const navigate = useNavigate();
-  const [Success, setSuccess] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
-  const onSubmit = async (data) => {
-  const res = await fetch("https://localhost:7109/api/HostLoginCheck/login", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    username: data.username,
-    password: data.password,
-  }),
-});
-
-let result;
-const text = await res.text();
-try {
-  result = JSON.parse(text);
-} catch {
-  result = { message: text };
-}
-
-if (res.ok) {
-  setSuccess(true);
-  localStorage.setItem("token", result.token);
-  localStorage.setItem("role", result.role);
   
-  if (result.role === "admin") {
-    localStorage.setItem("AdminID", result.id);
-    setMessage({
-      type: "success",
-      text: "Root Access Granted"
-    });
-    setTimeout(() => {
-      navigate("/admin-dashboard");
-    }, 1000);
-  } else {
-    localStorage.setItem("HostID", result.id);
-    setMessage({
-      type: "success",
-      text: result.message || "Login successful"
-    });
-    setTimeout(() => {
-      navigate("/");
-    }, 1000);
-  }
-}
- else {
-  setMessage({
-  type: "error",
-  text: result.message || "Login failed"
-});
-  if (result.message && result.message.includes("approval")) {
-    toast.error(result.message, { 
-      icon: <Timer size={20} className="text-amber-500" /> 
-    });
-  }
-}
-
-};
   const {
     register,
     handleSubmit,
     formState: { errors }
   } = useForm();
+
+  const onSubmit = async (data) => {
+    setMessage({ type: '', text: '' });
+    try {
+      const result = await api.auth.hostLogin({
+        username: data.username,
+        password: data.password,
+      });
+
+      localStorage.setItem("token", result.token);
+      localStorage.setItem("role", result.role);
+      
+      if (result.role === "admin") {
+        localStorage.setItem("AdminID", result.id);
+        setMessage({ type: "success", text: "Root Access Granted" });
+        setTimeout(() => {
+          navigate("/admin-dashboard");
+        }, 1000);
+      } else {
+        localStorage.setItem("HostID", result.id);
+        setMessage({ type: "success", text: result.message || "Login successful" });
+        setTimeout(() => {
+          navigate("/host-profile");
+        }, 1000);
+      }
+    } catch (error) {
+      setMessage({ type: "error", text: error.message || "Login failed" });
+      if (error.message && error.message.includes("approval")) {
+        toast.error(error.message, { 
+          icon: <Timer size={20} className="text-amber-500" /> 
+        });
+      }
+    }
+  };
 
   return (
     <div className="w-full min-h-screen flex justify-center flex-col items-center relative bg-slate-50 dark:bg-slate-950 font-sans transition-colors duration-500 overflow-hidden">

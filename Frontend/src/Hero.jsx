@@ -1,37 +1,35 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import Navbar from "./Navbar";
 import { motion } from "framer-motion";
 import Card from './Card';
 import Footer from "./Footer";
-import ApplicationForm from "./ApplicationForm";
-import { Globe } from "lucide-react";
-
+import ApplicationForm from './ApplicationForm';
+import { Sparkles, Trophy, Rocket, Globe, Zap, Search, LayoutGrid, List } from 'lucide-react';
+import { api } from "./services/api";
 
 const Hero = () => {
   const [hackathons, setHackathons] = useState([]);
+  const [appliedIds, setAppliedIds] = useState(new Set());
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-
+  const [error, setError] = useState(null);
+  const [selectedHackathon, setSelectedHackathon] = useState(null);
+  const [filterType, setFilterType] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [viewMode, setViewMode] = useState('grid');
+  const [showAppliedOnly, setShowAppliedOnly] = useState(false);
+
   const [modeFilter, setModeFilter] = useState('Mode');
   const [teamSizeFilter, setTeamSizeFilter] = useState('Team Size');
   const [prizeFilter, setPrizeFilter] = useState('Prize Pool');
   const [activeCheckboxes, setActiveCheckboxes] = useState([]);
-  const [selectedHackathon, setSelectedHackathon] = useState(null);
-  const [appliedIds, setAppliedIds] = useState([]);
 
   useEffect(() => {
     const fetchHackathons = async () => {
       try {
-        const response = await fetch('https://localhost:7109/api/HackathonList/GetAll');
-        if (response.ok) {
-          const data = await response.json();
-          setHackathons(data);
-        } else {
-          setError('Failed to fetch hackathons.');
-        }
+        const data = await api.hackathons.getAll();
+        setHackathons(data);
       } catch (err) {
-        setError('Error connecting to the server.');
+        setError('Failed to fetch hackathons.');
       } finally {
         setLoading(false);
       }
@@ -41,14 +39,12 @@ const Hero = () => {
       const id = localStorage.getItem('ParticipantsID');
       if (!id) return;
       try {
-        const res = await fetch(`https://localhost:7109/api/ParticipantDashboard/GetAppliedHackathons/${id}`, {
-          headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-        });
-        if (res.ok) {
-          const data = await res.json();
-          setAppliedIds(data.map(a => Number(a.hackathonId)));
-        }
-      } catch (err) { /* ignore if not logged in */ }
+        const data = await api.participant.getAppliedHackathons(id);
+        const ids = new Set(data.map(h => h.hackathonId || h.hackathonID || h.HostHackathonID));
+        setAppliedIds(ids);
+      } catch (err) {
+        console.error('Failed to fetch applied IDs', err);
+      }
     };
 
     fetchHackathons();

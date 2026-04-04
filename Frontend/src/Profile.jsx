@@ -14,6 +14,7 @@ import Card from './Card';
 import ApplicationForm from './ApplicationForm';
 import { Sparkles, Camera, Trophy, Medal } from 'lucide-react';
 import { Link } from "react-router-dom";
+import { api } from "./services/api";
 
 
 const Profile = () => {
@@ -48,15 +49,8 @@ const Profile = () => {
     const id = localStorage.getItem("ParticipantsID");
     if (!id) return;
     try {
-      const res = await fetch(`https://localhost:7109/api/ParticipantDashboard/ClearNotifications/${id}`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-      if (res.ok) {
-        setAppliedHackathons(prev => prev.map(a => ({ ...a, isNotificationCleared: true })));
-      }
+      await api.participant.clearNotifications(id);
+      setAppliedHackathons(prev => prev.map(a => ({ ...a, isNotificationCleared: true })));
     } catch (err) {
       console.error("Failed to clear notifications", err);
     }
@@ -110,20 +104,13 @@ const Profile = () => {
     const id = localStorage.getItem("ParticipantsID");
     if (!id) return;
     try {
-      const res = await fetch(`https://localhost:7109/api/GetEditedProfileData/GetProfile/${id}`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setSkill(data.skill || "");
-        setPlace(data.place || "");
-        setGithub(data.github || "");
-        setBio(data.bio || "");
-        if (data.image) {
-          setImage(`data:image/png;base64,${data.image}`);
-        }
+      const data = await api.participant.getEditedProfile(id);
+      setSkill(data.skill || "");
+      setPlace(data.place || "");
+      setGithub(data.github || "");
+      setBio(data.bio || "");
+      if (data.image) {
+        setImage(`data:image/png;base64,${data.image}`);
       }
     } catch (err) {
       console.error(err);
@@ -145,36 +132,26 @@ const Profile = () => {
     formData.append("Bio", finalBio);
 
     try {
-      const res = await fetch("https://localhost:7109/api/ParticipantsProfile/SaveProfile", {
-        method: "POST",
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: formData
-      });
-      if (res.ok) {
-        toast.success("Profile Saved Successfully");
-        
-        setSkill(finalSkill);
-        setPlace(finalPlace);
-        setGithub(finalGithub);
-        setBio(finalBio);
-        if (editImage) setImage(editImage);
+      await api.participant.saveProfile(formData);
+      toast.success("Profile Saved Successfully");
+      
+      setSkill(finalSkill);
+      setPlace(finalPlace);
+      setGithub(finalGithub);
+      setBio(finalBio);
+      if (editImage) setImage(editImage);
 
-        setEditSkill("");
-        setEditPlace("");
-        setEditGithub("");
-        setEditBio("");
-        setEditImage(null);
-        setEditImageFile(null);
+      setEditSkill("");
+      setEditPlace("");
+      setEditGithub("");
+      setEditBio("");
+      setEditImage(null);
+      setEditImageFile(null);
 
-        setVisible(false);
-      } else {
-        toast.error("Failed to save profile.");
-      }
+      setVisible(false);
     } catch (err) {
       console.error(err);
-      toast.error("Connection error.");
+      toast.error(err.message || "Connection error.");
     }
   };
 
@@ -186,17 +163,10 @@ const Profile = () => {
         return;
       }
       try {
-        const res = await fetch(`https://localhost:7109/api/GetProfileData/GetProfile/${id}`, {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
-        });
-        if (res.ok) {
-          const data = await res.json();
-          setName(data.name || "");
-          setEmail(data.email || "");
-          setQualification(data.qualification || "");
-        }
+        const data = await api.participant.getProfile(id);
+        setName(data.name || "");
+        setEmail(data.email || "");
+        setQualification(data.qualification || "");
       } catch (err) {
         console.error(err);
       }
@@ -206,15 +176,8 @@ const Profile = () => {
       if (!id) return;
       setLoadingHistory(true);
       try {
-        const res = await fetch(`https://localhost:7109/api/ParticipantDashboard/GetAppliedHackathons/${id}`, {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
-        });
-        if (res.ok) {
-          const data = await res.json();
-          setAppliedHackathons(data);
-        }
+        const data = await api.participant.getAppliedHackathons(id);
+        setAppliedHackathons(data);
       } catch (err) {
         console.error("Failed to fetch applications", err);
       } finally {
@@ -224,8 +187,8 @@ const Profile = () => {
 
     const fetchAllHackathons = async () => {
       try {
-        const res = await fetch("https://localhost:7109/api/HackathonList/GetAll");
-        if (res.ok) setAllHackathons(await res.json());
+        const data = await api.hackathons.getAll();
+        setAllHackathons(data);
       } catch (err) {
         console.error("Failed to fetch all hackathons", err);
       }
@@ -613,8 +576,7 @@ const Profile = () => {
           onClose={() => {
             setSelectedHackathon(null);
             const id = localStorage.getItem("ParticipantsID");
-            fetch(`https://localhost:7109/api/ParticipantDashboard/GetAppliedHackathons/${id}`)
-              .then(res => res.json())
+            api.participant.getAppliedHackathons(id)
               .then(data => setAppliedHackathons(data))
               .catch(err => console.error(err));
           }}

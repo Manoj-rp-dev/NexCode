@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import Logo from './Logo';
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { api } from "../services/api";
 
 const Signup = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -13,32 +14,21 @@ const Signup = () => {
     setMessage({ type: '', text: '' });
     
     try {
-      const res = await fetch("https://localhost:7109/api/ParticipantsSignUp/Signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          firstname: data.firstName,
-          lastname: data.lastName,
-          email: data.email,
-          dob: data.dob,
-          degree: data.degree,
-          collegename: data.college,
-          username: data.username,
-          password: data.password,
-        }),
+      const result = await api.auth.participantSignup({
+        firstname: data.firstName,
+        lastname: data.lastName,
+        email: data.email,
+        dob: data.dob,
+        degree: data.degree,
+        collegename: data.college,
+        username: data.username,
+        password: data.password,
       });
-      if (res.ok) {
-        const result = await res.json();
-        setMessage({ type: 'success', text: result.message || 'Signup successful!' });
-        setTimeout(()=>{
-          navigate('/')
-        },1000);
-      } else {
-        const error = await res.json();
-        setMessage({ type: 'error', text: error.message || 'Signup failed. Please try again.' });
-      }
+      
+      setMessage({ type: 'success', text: result.message || 'Signup successful!' });
+      setTimeout(()=>{
+        navigate('/')
+      },1000);
     } catch (error) {
       setMessage({ type: 'error', text: 'Network error. Please check your connection.' });
     } finally {

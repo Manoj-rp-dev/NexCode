@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "./Logo";
+import toast from "react-hot-toast";
+import { api } from "../services/api";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
-  const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
   
@@ -20,54 +21,23 @@ const ForgotPassword = () => {
     setMessage({ type: '', text: '' });
     
     try {
-      const res = await fetch("https://localhost:7109/api/ParticipantsForgotPassword/reset", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: data.username,
-          email: data.email,
-          newPassword: data.newPassword,
-        }),
+      const result = await api.auth.participantResetPassword({
+        username: data.username,
+        email: data.email,
+        newPassword: data.newPassword,
       });
 
-      let result;
-      const text = await res.text();
-      try {
-        result = JSON.parse(text);
-      } catch {
-        result = { message: text };
-      }
-
-      if (res.ok) {
-        setSuccess(true);
-        setMessage({
-          type: "success",
-          text: result.message || "Password reset successful"
-        });
-        setTimeout(() => {
-          navigate("/plogin");
-        }, 2000);
-      } else {
-        let errorText = "Password reset failed";
-        if (result.message) {
-          errorText = result.message;
-        } else if (result.errors) {
-          // Flatten ASP.NET Core validation errors
-          errorText = Object.values(result.errors).flat().join(" ");
-        } else if (result.title) {
-          errorText = result.title;
-        }
-        setMessage({
-          type: "error",
-          text: errorText
-        });
-      }
+      setMessage({
+        type: "success",
+        text: result.message || "Password reset successful"
+      });
+      setTimeout(() => {
+        navigate("/plogin");
+      }, 2000);
     } catch (error) {
       setMessage({
         type: "error",
-        text: "An error occurred while connecting to the server."
+        text: error.message || "Password reset failed"
       });
     } finally {
       setLoading(false);

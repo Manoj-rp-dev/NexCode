@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { IoClose } from "react-icons/io5";
 import toast from "react-hot-toast";
+import { api } from "./services/api";
 
 const ApplicationForm = ({ hackathon, onClose }) => {
   const [loading, setLoading] = useState(false);
@@ -28,19 +29,14 @@ const ApplicationForm = ({ hackathon, onClose }) => {
     const fetchProfile = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`https://localhost:7109/api/GetProfileData/GetProfile/${participantId}`, {
-          headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-        });
-        if (res.ok) {
-          const data = await res.json();
-          setFormData(prev => ({
-            ...prev,
-            name: data.name || "",
-            email: data.email || "",
-            degree: data.qualification || "",
-            college: data.college || "" // Now returned by the API
-          }));
-        }
+        const data = await api.participant.getProfile(participantId);
+        setFormData(prev => ({
+          ...prev,
+          name: data.name || "",
+          email: data.email || "",
+          degree: data.qualification || "",
+          college: data.college || "" // Now returned by the API
+        }));
       } catch (error) {
         console.error("Failed to fetch profile pre-fill data", error);
       } finally {
@@ -99,37 +95,25 @@ const ApplicationForm = ({ hackathon, onClose }) => {
     console.log("Submitting Application Payload:", payload);
 
     try {
-      const res = await fetch("https://localhost:7109/api/HackathonApplication/Apply", {
-        method: "POST",
-        headers: { 
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem("token")}`
-        },
-        body: JSON.stringify(payload)
-      });
+      await api.hackathons.apply(payload);
       
-      if (res.ok) {
-        toast.success(
-          <span>
-            <b>Successfully applied!</b><br/>
-            For more information, visit the <a 
-              href={hackathon.websiteLink} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="text-violet-600 dark:text-cyan-400 hover:underline font-bold"
-            >
-              official website
-            </a>.
-          </span>,
-          { duration: 6000 }
-        );
-        onClose();
-      } else {
-        const err = await res.json();
-        toast.error(err.message || "Failed to apply.");
-      }
+      toast.success(
+        <span>
+          <b>Successfully applied!</b><br/>
+          For more information, visit the <a 
+            href={hackathon.websiteLink} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="text-violet-600 dark:text-cyan-400 hover:underline font-bold"
+          >
+            official website
+          </a>.
+        </span>,
+        { duration: 6000 }
+      );
+      onClose();
     } catch (err) {
-      toast.error("Network error. Could not submit application.");
+      toast.error(err.message || "Network error. Could not submit application.");
     } finally {
       setSubmitting(false);
     }

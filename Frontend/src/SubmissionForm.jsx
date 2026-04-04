@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Calendar, Trophy, Users, Globe, FileText, Tag, Rocket } from "lucide-react";
 import { MdCloudUpload } from "react-icons/md";
 import toast from 'react-hot-toast';
+import { api } from "./services/api";
 
 export default function SubmissionForm() {
     const navigate = useNavigate();
@@ -77,38 +78,26 @@ export default function SubmissionForm() {
             data.append("WebsiteLink", form.websiteLink);
             data.append("Photo", form.photo);
 
-            const response = await fetch("https://localhost:7109/api/HostHackathon/CreateHackathon", {
-                method: "POST",
-                headers: {
-                    "Authorization": `Bearer ${localStorage.getItem("token")}`
-                },
-                body: data
+            await api.hackathons.create(data);
+            
+            setError("");
+            toast.success("Hackathon submitted successfully! Redirecting to dashboard...", {
+                duration: 4000,
+                icon: <Rocket size={20} className="text-violet-500" />
             });
             
-
-            if (response.ok) {
-                setError("");
-                toast.success("Hackathon submitted successfully! Redirecting to dashboard...", {
-                    duration: 4000,
-                    icon: <Rocket size={20} className="text-violet-500" />
-                });
-                
-                // Clear form
-                handleclear();
-                
-                // Navigate after 3 seconds
-                setTimeout(() => {
-                    navigate("/host-profile");
-                }, 3000);
-            } else {
-                setError("Submission failed");
-                toast.error("Failed to submit hackathon.");
-            }
+            // Clear form
+            handleclear();
+            
+            // Navigate after 3 seconds
+            setTimeout(() => {
+                navigate("/host-profile");
+            }, 3000);
 
         } catch (err) {
             console.error(err);
-            setError("Server error");
-            toast.error("An error occurred during submission.");
+            setError(err.message || "Submission failed");
+            toast.error(err.message || "An error occurred during submission.");
         } finally {
             setSubmitting(false);
         }
