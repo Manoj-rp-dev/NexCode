@@ -1,10 +1,11 @@
-# Visual Studio
-.vs/
+# ASP.NET
 bin/
 obj/
+.vs/
 
-# Node
+# React
 node_modules/
+dist/
 
-# Logs
-*.log
+# Environment
+.env
