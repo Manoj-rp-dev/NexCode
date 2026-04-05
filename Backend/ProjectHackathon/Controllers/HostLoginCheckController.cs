@@ -46,69 +46,63 @@ namespace ProjectHackathon.Controllers
         [HttpPost("login")]
         public IActionResult CheckLogin([FromBody] HostLogin l)
         {
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
-            SqlConnection con = new SqlConnection(connectionString);
-
-            string query = "SELECT HostID, UserPassword, IsApproved FROM Host WHERE Username=@u";
-
-            SqlCommand cmd = new SqlCommand(query, con);
-            cmd.Parameters.AddWithValue("@u", l.Username);
-
-            con.Open();
-            using (SqlDataReader reader = cmd.ExecuteReader())
+            try
             {
-                if (reader.Read())
+                string connectionString = _configuration.GetConnectionString("DefaultConnection");
+                using (SqlConnection con = new SqlConnection(connectionString))
                 {
-                    int userId = Convert.ToInt32(reader[0]);
-                    string hashedPassword = reader[1].ToString();
-                    bool isApproved = Convert.ToBoolean(reader["IsApproved"]);
+                    string query = "SELECT HostID, UserPassword, IsApproved FROM Host WHERE Username=@u";
+                    SqlCommand cmd = new SqlCommand(query, con);
+                    cmd.Parameters.AddWithValue("@u", l.Username);
 
-                    if (BCrypt.Net.BCrypt.Verify(l.Password, hashedPassword))
+                    con.Open();
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        if (!isApproved)
+                        if (reader.Read())
                         {
-                            reader.Close();
-                            con.Close();
-                            return BadRequest(new { message = "Your account is awaiting admin approval." });
+                            int userId = Convert.ToInt32(reader["HostID"]);
+                            string storedPassword = reader["UserPassword"].ToString().Trim();
+                            bool isApproved = Convert.ToBoolean(reader["IsApproved"]);
+
+                            if (BCrypt.Net.BCrypt.Verify(l.Password, storedPassword))
+                            {
+                                if (!isApproved)
+                                {
+                                    return BadRequest(new { message = "Your account is awaiting admin approval." });
+                                }
+
+                                string token = GenerateToken(userId.ToString(), "host");
+                                return Ok(new { token = token, id = userId, role = "host" });
+                            }
                         }
-
-                        reader.Close();
-                        con.Close();
-                        string token = GenerateToken(userId.ToString(), "host");
-                        return Ok(new
-                        {
-                            token = token,
-                            id = userId,
-                            role = "host"
-                        });
                     }
-                }
-            }
 
-            // Fallback for Admin
-            string adminQuery = "SELECT AdminID, UserPassword FROM Admin WHERE Username=@u";
-            SqlCommand adminCmd = new SqlCommand(adminQuery, con);
-            adminCmd.Parameters.AddWithValue("@u", l.Username);
-            using (SqlDataReader adminReader = adminCmd.ExecuteReader())
-            {
-                if (adminReader.Read())
-                {
-                    int adminId = Convert.ToInt32(adminReader["AdminID"]);
-                    string storedPassword = adminReader["UserPassword"].ToString().Trim();
-
-                    if (l.Password.Trim() == storedPassword)
+                    // Fallback for Admin
+                    string adminQuery = "SELECT AdminID, UserPassword FROM Admin WHERE Username=@u";
+                    SqlCommand adminCmd = new SqlCommand(adminQuery, con);
+                    adminCmd.Parameters.AddWithValue("@u", l.Username);
+                    using (SqlDataReader adminReader = adminCmd.ExecuteReader())
                     {
-                        adminReader.Close();
-                        con.Close();
-                        string token = GenerateToken(adminId.ToString(), "admin");
-                        return Ok(new { token = token, id = adminId, role = "admin" });
+                        if (adminReader.Read())
+                        {
+                            int adminId = Convert.ToInt32(adminReader["AdminID"]);
+                            string storedPassword = adminReader["UserPassword"].ToString().Trim();
+
+                            if (BCrypt.Net.BCrypt.Verify(l.Password, storedPassword))
+                            {
+                                string token = GenerateToken(adminId.ToString(), "admin");
+                                return Ok(new { token = token, id = adminId, role = "admin" });
+                            }
+                        }
                     }
                 }
+
+                return BadRequest(new { message = "Login failed" });
             }
-
-            con.Close();
-
-            return BadRequest(new { message = "Login failed" });
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Server Exception: " + ex.Message });
+            }
         }
     }
 }

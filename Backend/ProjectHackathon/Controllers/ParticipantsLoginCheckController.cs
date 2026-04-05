@@ -45,89 +45,64 @@ namespace ProjectHackathon.Controllers
         [Route("login")]
         public IActionResult CheckLogin([FromBody] ParticipantsLogin l)
         {
-
-            SqlConnection con = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
-
-            string query = "SELECT ParticipantsID, UserPassword FROM Participants WHERE Username=@u";
-
-            SqlCommand cmd = new SqlCommand(query, con);
-            cmd.Parameters.AddWithValue("@u", l.Username);
-
-            con.Open();
-            using (SqlDataReader reader = cmd.ExecuteReader())
+            try
             {
-                if (reader.Read())
+                using (SqlConnection con = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
                 {
-                    int userId = Convert.ToInt32(reader["ParticipantsID"]);
-                    string hashedPassword = reader["UserPassword"].ToString().Trim();
-                    string enteredPassword = l.Password.Trim();
+                    string query = "SELECT ParticipantsID, UserPassword FROM Participants WHERE Username=@u";
+                    SqlCommand cmd = new SqlCommand(query, con);
+                    cmd.Parameters.AddWithValue("@u", l.Username);
 
-                    if (BCrypt.Net.BCrypt.Verify(enteredPassword, hashedPassword))
+                    con.Open();
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        reader.Close();
-                        con.Close();
-                        string token = GenerateToken(userId.ToString(), "participant");
-                        return Ok(new
+                        if (reader.Read())
                         {
-                            token = token,
-                            id = userId,
-                            role = "participant",
-                            message = "Login successful"
-                        });
-                    }
-                    else
-                    {
-                        reader.Close();
-                        con.Close();
-                        return BadRequest(new { message = "Incorrect password" });
-                    }
-                }
-            }
+                            int userId = Convert.ToInt32(reader["ParticipantsID"]);
+                            string storedPassword = reader["UserPassword"].ToString().Trim();
+                            string enteredPassword = l.Password.Trim();
 
-            // Fallback for Admin
-            string adminQuery = "SELECT AdminID, UserPassword FROM Admin WHERE Username=@u";
-            SqlCommand adminCmd = new SqlCommand(adminQuery, con);
-            adminCmd.Parameters.AddWithValue("@u", l.Username);
-            using (SqlDataReader adminReader = adminCmd.ExecuteReader())
-            {
-                if (adminReader.Read())
-                {
-                    int adminId = Convert.ToInt32(adminReader["AdminID"]);
-                    string storedPassword = adminReader["UserPassword"].ToString().Trim();
-                    string enteredPassword = l.Password.Trim();
-
-                    bool isPasswordMatch = false;
-                    if (storedPassword.StartsWith("$2a$") || storedPassword.StartsWith("$2b$") || storedPassword.StartsWith("$2y$"))
-                    {
-                        try {
-                            isPasswordMatch = BCrypt.Net.BCrypt.Verify(enteredPassword, storedPassword);
-                        } catch {
-                            isPasswordMatch = (enteredPassword == storedPassword);
+                            if (BCrypt.Net.BCrypt.Verify(enteredPassword, storedPassword))
+                            {
+                                string token = GenerateToken(userId.ToString(), "participant");
+                                return Ok(new
+                                {
+                                    token = token,
+                                    id = userId,
+                                    role = "participant",
+                                    message = "Login successful"
+                                });
+                            }
                         }
                     }
-                    else
-                    {
-                        isPasswordMatch = (enteredPassword == storedPassword);
-                    }
 
-                    if (isPasswordMatch)
+                    // Fallback for Admin
+                    string adminQuery = "SELECT AdminID, UserPassword FROM Admin WHERE Username=@u";
+                    SqlCommand adminCmd = new SqlCommand(adminQuery, con);
+                    adminCmd.Parameters.AddWithValue("@u", l.Username);
+                    using (SqlDataReader adminReader = adminCmd.ExecuteReader())
                     {
-                        adminReader.Close();
-                        con.Close();
-                        string token = GenerateToken(adminId.ToString(), "admin");
-                        return Ok(new { token = token, id = adminId, role = "admin" });
-                    }
-                    else
-                    {
-                        adminReader.Close();
-                        con.Close();
-                        return BadRequest(new { message = "Incorrect password for admin" });
+                        if (adminReader.Read())
+                        {
+                            int adminId = Convert.ToInt32(adminReader["AdminID"]);
+                            string storedPassword = adminReader["UserPassword"].ToString().Trim();
+                            string enteredPassword = l.Password.Trim();
+
+                            if (BCrypt.Net.BCrypt.Verify(enteredPassword, storedPassword))
+                            {
+                                string token = GenerateToken(adminId.ToString(), "admin");
+                                return Ok(new { token = token, id = adminId, role = "admin" });
+                            }
+                        }
                     }
                 }
-            }
 
-            con.Close();
-            return BadRequest(new { message = "Account not found" });
+                return BadRequest(new { message = "Login failed" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Server Exception: " + ex.Message });
+            }
         }
     }
 }

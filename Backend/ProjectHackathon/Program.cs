@@ -9,7 +9,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReact",
-        policy => policy.AllowAnyOrigin()
+        policy => policy.WithOrigins("https://nex-code-two.vercel.app")
                         .AllowAnyMethod()
                         .AllowAnyHeader());
 });

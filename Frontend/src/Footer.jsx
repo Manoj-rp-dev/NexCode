@@ -15,7 +15,7 @@ const Footer = () => {
                         <div>
                             <div className="text-xl font-extrabold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-fuchsia-500 dark:from-fuchsia-400 dark:to-cyan-400">NexCode</div>
                             <div className="space-y-4 text-slate-600 dark:text-slate-400 font-medium">
-                                <div className="hover:text-violet-600 dark:hover:text-fuchsia-400 transition-colors cursor-pointer w-max">About</div>
+                                <a href="/about" className="hover:text-violet-600 dark:hover:text-fuchsia-400 transition-colors cursor-pointer w-max">About</a>
                                 <div className="hover:text-violet-600 dark:hover:text-fuchsia-400 transition-colors cursor-pointer w-max">Careers</div>
                                 <div className="hover:text-violet-600 dark:hover:text-fuchsia-400 transition-colors cursor-pointer w-max">Contact</div>
                                 <div className="hover:text-violet-600 dark:hover:text-fuchsia-400 transition-colors cursor-pointer w-max">Help</div>
@@ -25,11 +25,11 @@ const Footer = () => {
                         {/* Column 2 */}
                         <div>
                             <div className="text-lg font-bold mb-6 text-slate-900 dark:text-white drop-shadow-sm">Hackathons</div>
-                            <div className="space-y-4 text-slate-600 dark:text-slate-400 font-medium">
-                                <div className="hover:text-violet-600 dark:hover:text-fuchsia-400 transition-colors cursor-pointer w-max">Browse hackathons</div>
-                                <div className="hover:text-violet-600 dark:hover:text-fuchsia-400 transition-colors cursor-pointer w-max">Explore projects</div>
-                                <div className="hover:text-violet-600 dark:hover:text-fuchsia-400 transition-colors cursor-pointer w-max">Host a hackathon</div>
-                                <div className="hover:text-violet-600 dark:hover:text-fuchsia-400 transition-colors cursor-pointer w-max">Hackathon guides</div>
+                            <div className="space-y-4 text-slate-600 dark:text-slate-400 font-medium overflow-hidden">
+                                <a href="/join" className="hover:text-violet-600 dark:hover:text-fuchsia-400 transition-colors cursor-pointer w-max block">Browse hackathons</a>
+                                <div className="hover:text-violet-600 dark:hover:text-fuchsia-400 transition-colors cursor-pointer w-max block">Explore projects</div>
+                                <a href="/hsignup" className="hover:text-violet-600 dark:hover:text-fuchsia-400 transition-colors cursor-pointer w-max block">Host a hackathon</a>
+                                <div className="hover:text-violet-600 dark:hover:text-fuchsia-400 transition-colors cursor-pointer w-max block">Hackathon guides</div>
                             </div>
                         </div>
                         
@@ -39,7 +39,7 @@ const Footer = () => {
                             <div className="space-y-4 text-slate-600 dark:text-slate-400 font-medium">
                                 <div className="hover:text-violet-600 dark:hover:text-fuchsia-400 transition-colors cursor-pointer w-max">Your projects</div>
                                 <div className="hover:text-violet-600 dark:hover:text-fuchsia-400 transition-colors cursor-pointer w-max">Your hackathons</div>
-                                <div className="hover:text-violet-600 dark:hover:text-fuchsia-400 transition-colors cursor-pointer w-max">Settings</div>
+                                <a href="/admin-login" className="hover:text-violet-600 dark:hover:text-fuchsia-400 transition-colors cursor-pointer w-max block font-bold text-violet-500">Admin Login</a>
                             </div>
                         </div>
                         
