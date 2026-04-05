@@ -1,10 +1,8 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
 builder.Services.AddSingleton<ProjectHackathon.Services.EmailService>();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -16,7 +14,7 @@ builder.Services.AddCors(options =>
                         .AllowAnyHeader());
 });
 
-// Configure JWT Authentication
+// JWT
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var key = System.Text.Encoding.UTF8.GetBytes(jwtSettings["Key"]!);
 
@@ -41,14 +39,12 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// Enable swagger everywhere
+app.UseSwagger();
+app.UseSwaggerUI();
 
-app.UseHttpsRedirection();
+// REMOVE HTTPS redirect
+// app.UseHttpsRedirection();
 
 app.UseCors("AllowReact");
 

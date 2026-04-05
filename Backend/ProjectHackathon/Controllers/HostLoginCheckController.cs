@@ -41,14 +41,13 @@ namespace ProjectHackathon.Controllers
             return new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        private string connectionString =
-        "Data Source=MANOJ\\SQLEXPRESS;Initial Catalog=Project;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
+        private string connectionString;
 
         [HttpPost("login")]
         public IActionResult CheckLogin([FromBody] HostLogin l)
         {
-            SqlConnection con = new SqlConnection(
-            "Data Source=MANOJ\\SQLEXPRESS;Initial Catalog=Project;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
+            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            SqlConnection con = new SqlConnection(connectionString);
 
             string query = "SELECT HostID, UserPassword, IsApproved FROM Host WHERE Username=@u";
 

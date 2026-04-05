@@ -9,8 +9,14 @@ namespace ProjectHackathon.Controllers
     [ApiController]
     public class ParticipantsForgotPasswordController : ControllerBase
     {
-        private string connectionString =
-        "Data Source=MANOJ\\SQLEXPRESS;Initial Catalog=Project;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
+        private readonly IConfiguration _configuration;
+        private string connectionString;
+
+        public ParticipantsForgotPasswordController(IConfiguration configuration)
+        {
+            _configuration = configuration;
+            connectionString = _configuration.GetConnectionString("DefaultConnection");
+        }
 
         [HttpPost("reset")]
         public IActionResult ResetPassword([FromBody] ParticipantsForgotPassword model)

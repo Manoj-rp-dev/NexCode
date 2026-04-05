@@ -1,5 +1,5 @@
-USE Project;
-GO
+-- USE Project; Removed for portability on hosted environments
+-- GO
 
 -- Disable all constraints to allow safe dropping
 DECLARE @Sql NVARCHAR(MAX) = '';
@@ -17,7 +17,12 @@ DROP TABLE IF EXISTS Host;
 DROP TABLE IF EXISTS Admin;
 GO
 
--- Create Admin table
+-- Drop Stored Procedures if they exist
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'SaveParticipantsProfile')
+    DROP PROCEDURE SaveParticipantsProfile;
+GO
+
+-- Create Admin table (Plain text password support included in Backend)
 CREATE TABLE Admin (
     AdminID INT PRIMARY KEY IDENTITY(1,1),
     Username NVARCHAR(100) NOT NULL,
@@ -25,7 +30,7 @@ CREATE TABLE Admin (
 );
 GO
 
--- Create Participants table
+-- Create Participants table (BCrypt Hashed)
 CREATE TABLE Participants (
     ParticipantsID INT PRIMARY KEY IDENTITY(1,1),
     Firstname VARCHAR(30) NOT NULL,
@@ -96,27 +101,52 @@ GO
 -- Create HackathonApplications table
 CREATE TABLE HackathonApplications (
     ApplicationID INT PRIMARY KEY IDENTITY(1,1),
-    ParticipantsID INT NOT NULL,  -- Matches backend expectation
+    ParticipantsID INT NOT NULL,
     HostHackathonID INT NOT NULL,
-    CollegeName NVARCHAR(MAX),    -- Added missing column
-    PortfolioUrl NVARCHAR(MAX),   -- Added missing column
-    Motivation NVARCHAR(MAX),      -- Added missing column
-    TeamMembers NVARCHAR(MAX),     -- Added missing column
-    AppliedAt DATETIME DEFAULT GETDATE(), -- Renamed from ApplicationDate
+    CollegeName NVARCHAR(MAX),
+    PortfolioUrl NVARCHAR(MAX),
+    Motivation NVARCHAR(MAX),
+    TeamMembers NVARCHAR(MAX),
+    AppliedAt DATETIME DEFAULT GETDATE(),
     Status NVARCHAR(50) DEFAULT 'Pending',
     ResumeData VARBINARY(MAX),
     IsWinner BIT DEFAULT 0,
     HasParticipated BIT DEFAULT 0,
-    HostIsNotificationCleared BIT DEFAULT 0, -- Added missing column
+    HostIsNotificationCleared BIT DEFAULT 0,
     CONSTRAINT FK_HackathonApplications_Participants FOREIGN KEY (ParticipantsID) REFERENCES Participants(ParticipantsID) ON DELETE CASCADE,
     CONSTRAINT FK_HackathonApplications_HostHackathon FOREIGN KEY (HostHackathonID) REFERENCES HostHackathon(HackathonID) ON DELETE CASCADE
 );
 GO
 
--- Empty database reset
+-- Create Stored Procedure for Saving Participant Profile
+CREATE OR ALTER PROCEDURE SaveParticipantsProfile
+    @ParticipantsID INT,
+    @Skill NVARCHAR(200),
+    @Place NVARCHAR(200),
+    @GithubLink NVARCHAR(300),
+    @Bio NVARCHAR(MAX),
+    @ProfileImage VARBINARY(MAX)
+AS
+BEGIN
+    IF EXISTS (SELECT 1 FROM ParticipantsProfile WHERE ParticipantsID = @ParticipantsID)
+    BEGIN
+        UPDATE ParticipantsProfile
+        SET Skill = @Skill,
+            Place = @Place,
+            GithubLink = @GithubLink,
+            Bio = @Bio,
+            ProfileImage = @ProfileImage
+        WHERE ParticipantsID = @ParticipantsID
+    END
+    ELSE
+    BEGIN
+        INSERT INTO ParticipantsProfile (ParticipantsID, Skill, Place, GithubLink, Bio, ProfileImage)
+        VALUES (@ParticipantsID, @Skill, @Place, @GithubLink, @Bio, @ProfileImage)
+    END
+END
 GO
 
 -- Seed Admin User (admin / admin123)
 INSERT INTO Admin (Username, UserPassword) 
-VALUES ('admin', 'admin123');
+VALUES ('admin', '$2a$12$R9h/lIPz0bou3EDF8.9PDeThz.V6Iq.LdIouX.FpM4uByis6H80mC');
 GO

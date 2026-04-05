@@ -32,7 +32,7 @@ namespace ProjectHackathon.Controllers
 
             if (h.ParticipationType == "Team" && (!h.TeamSize.HasValue || h.TeamSize < 2))
             {
-                return BadRequest("Team size must be at least 2 for team hackathons.");
+                return BadRequest(new { message = "Team size must be at least 2 for team hackathons." });
             }
 
             SqlConnection con = new SqlConnection(_connectionString);
@@ -59,7 +59,7 @@ namespace ProjectHackathon.Controllers
             cmd.ExecuteNonQuery();
             con.Close();
 
-            return Ok("Hackathon Saved");
+            return Ok(new { message = "Hackathon Saved" });
         }
         [HttpDelete("DeleteHackathon/{id}")]
         public IActionResult DeleteHackathon(int id)

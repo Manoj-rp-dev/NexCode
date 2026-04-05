@@ -48,7 +48,7 @@ namespace ProjectHackathon.Controllers
             cmd.ExecuteNonQuery();
             con.Close();
                 
-            return Ok("Profile Saved");
+            return Ok(new { message = "Profile Saved" });
         }
     }
 }

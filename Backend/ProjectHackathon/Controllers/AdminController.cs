@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using ProjectHackathon.Models;
 using System.Collections.Generic;
 using System.Data;
+using System;
 
 namespace ProjectHackathon.Controllers
 {
@@ -40,17 +42,13 @@ namespace ProjectHackathon.Controllers
                         string enteredPassword = l.Password.Trim();
 
                         bool isPasswordMatch = false;
-                        if (storedPassword.StartsWith("$2a$") || storedPassword.StartsWith("$2b$") || storedPassword.StartsWith("$2y$"))
-                        {
-                            try {
-                                isPasswordMatch = BCrypt.Net.BCrypt.Verify(enteredPassword, storedPassword);
-                            } catch {
-                                isPasswordMatch = (enteredPassword == storedPassword);
-                            }
+                        try 
+                        { 
+                            isPasswordMatch = BCrypt.Net.BCrypt.Verify(enteredPassword, storedPassword); 
                         }
-                        else
-                        {
-                            isPasswordMatch = (enteredPassword == storedPassword);
+                        catch 
+                        { 
+                            isPasswordMatch = false; 
                         }
 
                         if (isPasswordMatch)
@@ -60,7 +58,7 @@ namespace ProjectHackathon.Controllers
                         }
                     }
                 }
-                return BadRequest(new { message = "Login failed" });
+                return BadRequest(new { message = "login failed" });
             }
             catch (Exception ex)
             {

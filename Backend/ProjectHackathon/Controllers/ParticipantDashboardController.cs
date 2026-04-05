@@ -10,8 +10,14 @@ namespace ProjectHackathon.Controllers
     [Microsoft.AspNetCore.Authorization.Authorize]
     public class ParticipantDashboardController : ControllerBase
     {
-        private string connectionString =
-            "Data Source=MANOJ\\SQLEXPRESS;Initial Catalog=Project;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
+        private readonly IConfiguration _configuration;
+        private string connectionString;
+
+        public ParticipantDashboardController(IConfiguration configuration)
+        {
+            _configuration = configuration;
+            connectionString = _configuration.GetConnectionString("DefaultConnection");
+        }
 
         [HttpGet("GetAppliedHackathons/{participantsId}")]
         public IActionResult GetAppliedHackathons(int participantsId)

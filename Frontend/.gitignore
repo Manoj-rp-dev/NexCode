@@ -1,11 +1,19 @@
-# ASP.NET
-bin/
-obj/
+# Visual Studio
 .vs/
 
-# React
-node_modules/
-dist/
+# Build folders
+bin/
+obj/
 
-# Environment
-.env
+# User settings
+*.user
+*.suo
+
+# Publish profiles
+*.pubxml.user
+
+# Node
+node_modules/
+
+# Logs
+*.log
