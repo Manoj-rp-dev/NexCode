@@ -9,8 +9,8 @@ const Footer = () => {
             <footer className="bg-white dark:bg-slate-950 border flex justify-center items-center border-slate-200 dark:border-white/5 rounded-3xl text-slate-800 dark:text-white py-12 lg:py-16 w-[95vw] shadow-lg relative overflow-hidden transition-colors duration-500">
                 <div className="absolute top-[-20%]  left-[-10%] w-[300px] h-[300px] bg-violet-500/10 dark:bg-violet-500/10 blur-[80px] rounded-full pointer-events-none mix-blend-multiply dark:mix-blend-screen"></div>
                 
-                <div className="w-full max-w-7xl mx-auto px-6 flex justify-around  items-center flex-col sm:px-10 lg:px-16 relative z-10">
-                    <div className="grid grid-cols-2  md:grid-cols-4 gap-30 lg:gap-50 text-sm sm:text-base text-left">
+                <div className="w-full max-w-7xl mx-auto px-6 flex flex-col sm:px-10 lg:px-16 relative z-10">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 sm:gap-16 lg:gap-20 text-sm sm:text-base text-left">
                         {/* Column 1 */}
                         <div>
                             <div className="text-xl font-extrabold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-fuchsia-500 dark:from-fuchsia-400 dark:to-cyan-400">NexCode</div>
