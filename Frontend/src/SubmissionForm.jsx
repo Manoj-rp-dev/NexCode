@@ -4,6 +4,7 @@ import { Calendar, Trophy, Users, Globe, FileText, Tag, Rocket } from "lucide-re
 import { MdCloudUpload } from "react-icons/md";
 import toast from 'react-hot-toast';
 import { api } from "./services/api";
+import { getUserId } from "./utils/auth";
 
 export default function SubmissionForm() {
     const navigate = useNavigate();
@@ -55,7 +56,7 @@ export default function SubmissionForm() {
         setSubmitting(true);
         try {
             const data = new FormData();
-            data.append("HostID", localStorage.getItem("HostID"));
+            data.append("HostID", getUserId());
             data.append("HackathonName", form.name);
             data.append("HackathonType", form.type);
             data.append("Mode", form.mode);

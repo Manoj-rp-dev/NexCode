@@ -10,7 +10,7 @@ namespace ProjectHackathon.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Microsoft.AspNetCore.Authorization.Authorize]
+    [Microsoft.AspNetCore.Authorization.Authorize(Roles = "admin")]
     public class AdminController : ControllerBase
     {
         private readonly IConfiguration _configuration;

@@ -4,11 +4,12 @@ import { Menu, X, Sun, Moon, Terminal } from "lucide-react";
 import Logo from "./Forparticipants/Logo";
 import Hero from "./Hero.jsx";
 import { useTheme } from "./ThemeContext.jsx";
+import { getUserRole } from "./utils/auth";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
-  let role = localStorage.getItem('role');
+  const role = getUserRole();
   const location = useLocation();
 
   const getLinkClass = (path) => {

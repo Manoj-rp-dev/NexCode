@@ -18,8 +18,6 @@ const AdminLogin = () => {
       const result = await api.auth.participantLogin(data);
       if (result.role === 'admin') {
         localStorage.setItem("token", result.token);
-        localStorage.setItem("AdminID", result.id);
-        localStorage.setItem("role", "admin");
         toast.success("Welcome back, Administrator");
         navigate("/admin-dashboard");
       } else {

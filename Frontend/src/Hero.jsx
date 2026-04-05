@@ -6,6 +6,7 @@ import Footer from "./Footer";
 import ApplicationForm from './ApplicationForm';
 import { Sparkles, Trophy, Rocket, Globe, Zap, Search, LayoutGrid, List } from 'lucide-react';
 import { api } from "./services/api";
+import { getUserId } from "./utils/auth";
 
 const Hero = () => {
   const [hackathons, setHackathons] = useState([]);
@@ -36,7 +37,7 @@ const Hero = () => {
     };
 
     const fetchAppliedIds = async () => {
-      const id = localStorage.getItem('ParticipantsID');
+      const id = getUserId();
       if (!id) return;
       try {
         const data = await api.participant.getAppliedHackathons(id);

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { IoClose } from "react-icons/io5";
 import toast from "react-hot-toast";
 import { api } from "./services/api";
+import { getUserId } from "./utils/auth";
 
 const ApplicationForm = ({ hackathon, onClose }) => {
   const [loading, setLoading] = useState(false);
@@ -17,7 +18,7 @@ const ApplicationForm = ({ hackathon, onClose }) => {
     teamMembers: []
   });
 
-  const participantId = localStorage.getItem("ParticipantsID");
+  const participantId = getUserId();
   const isTeam = hackathon?.participationType?.trim().toLowerCase() === "team";
   // The hackathon object might have `teamSize` property, parse as number
   const maxTeamSize = parseInt(hackathon?.teamSize || hackathon?.TeamSize || 1);

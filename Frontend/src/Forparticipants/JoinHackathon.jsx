@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import Card from '../Card';
 import ApplicationForm from '../ApplicationForm';
+import { api } from '../services/api';
+import { getUserId } from '../utils/auth';
 
 
 const JoinHackathon = () => {
@@ -33,7 +33,7 @@ const JoinHackathon = () => {
     };
 
     const fetchAppliedIds = async () => {
-        const id = localStorage.getItem('ParticipantsID');
+        const id = getUserId();
         if (!id) return;
         try {
           const data = await api.participant.getAppliedHackathons(id);
@@ -189,12 +189,9 @@ const JoinHackathon = () => {
           onClose={() => {
             setSelectedHackathon(null);
             // Re-fetch applied IDs to update the UI
-            const id = localStorage.getItem('ParticipantsID');
+            const id = getUserId();
             if (id) {
-              fetch(`https://localhost:7109/api/ParticipantDashboard/GetAppliedHackathons/${id}`, {
-                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-              })
-                .then(res => res.json())
+              api.participant.getAppliedHackathons(id)
                 .then(data => setAppliedIds(data.map(a => Number(a.hackathonId || a.hackathonID))))
                 .catch(err => console.error(err));
             }

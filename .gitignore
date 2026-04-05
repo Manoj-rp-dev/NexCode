@@ -1,0 +1,19 @@
+# Build folders
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio files
+.vs/
+*.user
+*.userosscache
+*.sln.docstates
+
+# Environment files
+.env
+.env.local
+
+# Node modules
+node_modules/
+dist/
+build/
+.vercel

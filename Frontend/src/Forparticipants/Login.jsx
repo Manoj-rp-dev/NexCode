@@ -24,16 +24,13 @@ const Login = () => {
       });
 
       localStorage.setItem("token", result.token);
-      localStorage.setItem("role", result.role);
       
       if (result.role === "admin") {
-        localStorage.setItem("AdminID", result.id);
         setMessage({ type: "success", text: "Root Access Granted" });
         setTimeout(() => {
           navigate("/admin-dashboard");
         }, 1000);
       } else {
-        localStorage.setItem("ParticipantsID", result.id);
         setMessage({ type: "success", text: result.message || "Login successful" });
         setTimeout(() => {
           navigate("/");

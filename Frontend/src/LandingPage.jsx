@@ -4,10 +4,11 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Globe, Shield, Zap } from "lucide-react";
 import Navbar from "./Navbar";
+import { getUserRole } from "./utils/auth";
 
 export default function App() {
   const navigate = useNavigate();
-  const role = localStorage.getItem('role');
+   const role = getUserRole();
 
   const handleExplore = () => {
     if (role === 'participant') {

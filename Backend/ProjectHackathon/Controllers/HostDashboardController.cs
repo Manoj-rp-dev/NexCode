@@ -11,7 +11,7 @@ namespace ProjectHackathon.Controllers
 {
     [Route("api/HostDashboard")]
     [ApiController]
-    [Microsoft.AspNetCore.Authorization.Authorize]
+    [Microsoft.AspNetCore.Authorization.Authorize(Roles = "host,admin")]
     public class HostDashboardController : ControllerBase
     {
         private readonly IConfiguration _configuration;

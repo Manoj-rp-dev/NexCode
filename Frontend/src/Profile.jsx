@@ -15,6 +15,7 @@ import ApplicationForm from './ApplicationForm';
 import { Sparkles, Camera, Trophy, Medal } from 'lucide-react';
 import { Link } from "react-router-dom";
 import { api } from "./services/api";
+import { getUserRole, getUserId } from "./utils/auth";
 
 
 const Profile = () => {
@@ -46,7 +47,7 @@ const Profile = () => {
   const [showNotifications, setShowNotifications] = useState(false);
 
   const clearNotifications = async () => {
-    const id = localStorage.getItem("ParticipantsID");
+    const id = getUserId();
     if (!id) return;
     try {
       await api.participant.clearNotifications(id);
@@ -82,9 +83,10 @@ const Profile = () => {
   const [savedHackathons, setSavedHackathons] = useState([]);
 
   const Logout = () => {
+    localStorage.removeItem("token");
+    // Clear legacy keys
     localStorage.removeItem("ParticipantsID");
     localStorage.removeItem("role");
-    localStorage.removeItem("token");
     
     toast.success("Logged out successfully");
     
@@ -101,7 +103,7 @@ const Profile = () => {
   };
 
   const fetchEditedProfileData = async () => {
-    const id = localStorage.getItem("ParticipantsID");
+    const id = getUserId();
     if (!id) return;
     try {
       const data = await api.participant.getEditedProfile(id);
@@ -125,7 +127,7 @@ const Profile = () => {
     const finalGithub = editGithub.trim() !== "" ? editGithub : github;
     const finalBio = editBio.trim() !== "" ? editBio : bio;
 
-    formData.append("ParticipantsID", Number(localStorage.getItem("ParticipantsID"))); 
+    formData.append("ParticipantsID", Number(getUserId())); 
     formData.append("Skill", finalSkill);
     formData.append("Place", finalPlace);
     formData.append("GithubLink", finalGithub);
@@ -157,8 +159,9 @@ const Profile = () => {
 
   useEffect(() => {
     const fetchCoreProfileData = async () => {
-      const id = localStorage.getItem("ParticipantsID");
-      if (!id) {
+      const id = getUserId();
+      const role = getUserRole();
+      if (!id || role !== 'participant') {
         navigate("/");
         return;
       }
@@ -172,7 +175,7 @@ const Profile = () => {
       }
     };
     const fetchAppliedHackathons = async () => {
-      const id = localStorage.getItem("ParticipantsID");
+      const id = getUserId();
       if (!id) return;
       setLoadingHistory(true);
       try {
@@ -575,7 +578,7 @@ const Profile = () => {
           hackathon={selectedHackathon}
           onClose={() => {
             setSelectedHackathon(null);
-            const id = localStorage.getItem("ParticipantsID");
+            const id = getUserId();
             api.participant.getAppliedHackathons(id)
               .then(data => setAppliedHackathons(data))
               .catch(err => console.error(err));

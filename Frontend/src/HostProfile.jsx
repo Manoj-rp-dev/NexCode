@@ -63,10 +63,12 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import toast from 'react-hot-toast';
 import { api } from "./services/api";
+import { getUserRole, getUserId } from "./utils/auth";
 
 const HostProfile = () => {
   const navigate = useNavigate();
-  const hostId = localStorage.getItem("HostID");
+  // Securely retrieve Host identity from JWT
+  const hostId = getUserId();
   
   const [activeTab, setActiveTab] = useState("overview");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -114,7 +116,9 @@ const HostProfile = () => {
   const [idToDelete, setIdToDelete] = useState(null);
 
   useEffect(() => {
-    if (!hostId) {
+    const role = getUserRole();
+    if (!hostId || role !== 'host') {
+      toast.error("Security Alert: Unauthorized identity detected");
       navigate("/");
       return;
     }
@@ -392,9 +396,11 @@ const HostProfile = () => {
   };
 
   const Logout = () => {
+    localStorage.removeItem("token");
+    // Clear legacy keys
     localStorage.removeItem("HostID");
     localStorage.removeItem("role");
-    localStorage.removeItem("token");
+    
     toast.success("Identity Disconnected");
     navigate("/");
   };

@@ -7,7 +7,7 @@ namespace ProjectHackathon.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Microsoft.AspNetCore.Authorization.Authorize]
+    [Microsoft.AspNetCore.Authorization.Authorize(Roles = "participant,admin")]
     public class ParticipantDashboardController : ControllerBase
     {
         private readonly IConfiguration _configuration;

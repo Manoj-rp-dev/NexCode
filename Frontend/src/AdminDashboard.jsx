@@ -21,6 +21,7 @@ import Logo from './Forparticipants/Logo';
 import { useTheme } from './ThemeContext';
 import { Sun, Moon, X, Ban, Unlock } from 'lucide-react';
 import { api } from "./services/api";
+import { getUserRole } from "./utils/auth";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -39,9 +40,10 @@ const AdminDashboard = () => {
   const [deleteTarget, setDeleteTarget] = useState({ id: null, type: '' });
 
   useEffect(() => {
-    // Basic auth check
-    const role = localStorage.getItem('role');
+    // Secure identity verification from JWT
+    const role = getUserRole();
     if (role !== 'admin') {
+      toast.error('Access restricted: Unauthorized terminal');
       navigate('/');
       return;
     }
@@ -147,9 +149,11 @@ const AdminDashboard = () => {
   };
 
   const logout = () => {
+    localStorage.removeItem('token');
+    // Clear legacy keys if they exist
     localStorage.removeItem('role');
     localStorage.removeItem('AdminID');
-    localStorage.removeItem('token');
+    
     toast.success('Admin identity disconnected');
     navigate('/');
   };
