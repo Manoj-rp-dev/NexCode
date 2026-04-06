@@ -67,10 +67,10 @@ E:\NexCode\Backend\ProjectHackathon\obj\Debug\net8.0\staticwebassets.build.json.
 E:\NexCode\Backend\ProjectHackathon\obj\Debug\net8.0\staticwebassets.development.json
 E:\NexCode\Backend\ProjectHackathon\obj\Debug\net8.0\staticwebassets.build.endpoints.json
 E:\NexCode\Backend\ProjectHackathon\obj\Debug\net8.0\swae.build.ex.cache
-E:\NexCode\Backend\ProjectHackathon\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 E:\NexCode\Backend\ProjectHackathon\obj\Debug\net8.0\ProjectH.36EA948B.Up2Date
 E:\NexCode\Backend\ProjectHackathon\obj\Debug\net8.0\ProjectHackathon.dll
 E:\NexCode\Backend\ProjectHackathon\obj\Debug\net8.0\refint\ProjectHackathon.dll
 E:\NexCode\Backend\ProjectHackathon\obj\Debug\net8.0\ProjectHackathon.pdb
 E:\NexCode\Backend\ProjectHackathon\obj\Debug\net8.0\ProjectHackathon.genruntimeconfig.cache
 E:\NexCode\Backend\ProjectHackathon\obj\Debug\net8.0\ref\ProjectHackathon.dll
+E:\NexCode\Backend\ProjectHackathon\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

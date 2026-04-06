@@ -19,7 +19,7 @@ namespace ProjectHackathon.Services
             var smtpPort = int.Parse(settings["SmtpPort"] ?? "587");
             var senderEmail = settings["SenderEmail"];
             // Retrieve password from environment variable for security, fallback to config for local dev
-            var senderPassword = Environment.GetEnvironmentVariable("GMAIL_APP_PASSWORD") ?? settings["SenderPassword"];
+            var senderPassword = Environment.GetEnvironmentVariable("GMAIL_APP_PASSWORD")?.Replace(" ", "") ?? settings["SenderPassword"];
 
             // For local development or if credentials aren't provided, log to console
             if (string.IsNullOrEmpty(senderEmail) || string.IsNullOrEmpty(senderPassword))
