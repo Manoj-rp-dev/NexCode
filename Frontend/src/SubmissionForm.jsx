@@ -349,7 +349,7 @@ export default function SubmissionForm() {
                                     onChange={handleChange}
                                     rows={5}
                                     placeholder="Provide details about the rules, themes, and expectations..."
-                                    className="w-full bg-slate-50 dark:bg-slate-950/50 p-5 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 border border-slate-200 dark:border-white/10 outline-none resize-none focus:ring-2 focus:ring-violet-500 transition-all font-medium mb-6"
+                                    className="w-full bg-slate-50 dark:bg-slate-950/50 p-5 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 border border-slate-200 dark:border-white/10 outline-none resize-none focus:ring-2 focus:ring-violet-500 transition-all font-medium mb-6 custom-scrollbar"
                                 />
 
                                 <h2 className="text-slate-800 dark:text-white text-lg lg:text-xl font-bold mb-6 flex items-center gap-2">

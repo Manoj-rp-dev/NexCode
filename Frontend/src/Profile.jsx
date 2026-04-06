@@ -336,7 +336,7 @@ const Profile = () => {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className='h-full w-full md:w-[400px] lg:w-[450px] bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-white/10 shadow-2xl overflow-y-auto px-6 py-8'
+            className='h-full w-full md:w-[400px] lg:w-[450px] bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-white/10 shadow-2xl overflow-y-auto px-6 py-8 custom-scrollbar'
           >
             <div className='flex justify-between items-center mb-10'>
               <h2 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Edit Profile</h2>
@@ -356,7 +356,7 @@ const Profile = () => {
                   <p className="font-medium text-slate-600 dark:text-slate-300 text-sm">Click or drag to upload avatar</p>
                 </div>
               </div>
-              <textarea value={editBio} onChange={(e) => setEditBio(e.target.value)} placeholder='Tell us about yourself...' className='w-full px-4 py-3 min-h-[120px] rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 text-slate-900 dark:text-slate-100 resize-y transition-shadow'></textarea>
+              <textarea value={editBio} onChange={(e) => setEditBio(e.target.value)} placeholder='Tell us about yourself...' className='w-full px-4 py-3 min-h-[120px] rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 text-slate-900 dark:text-slate-100 resize-y transition-shadow custom-scrollbar'></textarea>
             </div>
 
             <div className='mt-10'>
