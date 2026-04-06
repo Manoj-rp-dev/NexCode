@@ -228,7 +228,6 @@ const Hero = () => {
                            participationType={h.participationType}
                            duration={formatPrize}
                            subtitle="Prize Money"
-                           actionText={isApplied ? "Applied" : "View Details"}
                            disabled={isApplied}
                            onApply={isApplied ? undefined : () => setSelectedHackathon(h)}
                          />

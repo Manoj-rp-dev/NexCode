@@ -169,6 +169,7 @@ const JoinHackathon = () => {
                     hackathonId={hId}
                     logo={logoSrc}
                     company={companyName}
+                    websiteLink={h.websiteLink}
                     eventDate={h.eventDate}
                     time={isRecent}
                     title={h.hackathonName}
@@ -176,7 +177,6 @@ const JoinHackathon = () => {
                     type={h.hackathonType}
                     duration={formatPrize}
                     subtitle="Prize Money"
-                    actionText={isApplied ? "Applied" : "View Details"}
                     disabled={isApplied}
                     onApply={isApplied ? undefined : () => setSelectedHackathon(h)}
                   />
