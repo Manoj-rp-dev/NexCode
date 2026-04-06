@@ -101,18 +101,18 @@ namespace ProjectHackathon.Controllers
                                         {
                                             // Email doesn't exist, send invitation
                                             string subject = "You've been invited to join NexCode!";
-                                            string websiteLink = "http://localhost:5173"; 
+                                            string websiteLink = "https://nex-code-two.vercel.app/"; 
                                             string body = $@"
-                                                <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #7c3aed; border-radius: 12px;'>
-                                                    <h2 style='color: #7c3aed;'>Hello {memberName}!</h2>
-                                                    <p style='font-size: 16px; color: #333;'>One of your teammates has just invited you to participate in a hackathon on the <b>NexCode</b> platform.</p>
-                                                    <p style='font-size: 16px; color: #333;'>It looks like you don't have an account yet. Join NexCode to build innovation, compete with top developers, and win amazing prizes!</p>
-                                                    <div style='text-align: center; margin: 30px 0;'>
-                                                        <a href='{websiteLink}' style='background-color: #7c3aed; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 18px;'>Join NexCode Now</a>
+                                                <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px; border: 1px solid #7c3aed; border-radius: 20px; background-color: #ffffff;'>
+                                                    <h1 style='color: #7c3aed; font-size: 28px; margin-bottom: 24px;'>Hello {memberName}!</h1>
+                                                    <p style='font-size: 18px; color: #334155; line-height: 1.6; margin-bottom: 20px;'>One of your teammates has just invited you to participate in a hackathon on the <b style='color: #7c3aed;'>NexCode</b> platform.</p>
+                                                    <p style='font-size: 18px; color: #334155; line-height: 1.6; margin-bottom: 32px;'>It looks like you don't have an account yet. Join NexCode to build innovation, compete with top developers, and win amazing prizes!</p>
+                                                    <div style='text-align: center; margin: 40px 0;'>
+                                                        <a href='{websiteLink}' style='background-color: #7c3aed; color: #ffffff; padding: 16px 36px; text-decoration: none; border-radius: 12px; font-weight: 800; font-size: 20px; display: inline-block; box-shadow: 0 10px 15px -3px rgba(124, 58, 237, 0.3);'>Join NexCode Now</a>
                                                     </div>
-                                                    <p style='font-size: 14px; color: #666;'>If you have any questions, feel free to visit our website.</p>
-                                                    <hr style='border: 0; border-top: 1px solid #eee; margin: 20px 0;' />
-                                                    <p style='font-size: 12px; color: #999;'>Best regards,<br/>The NexCode Team</p>
+                                                    <p style='font-size: 16px; color: #64748b; margin-top: 40px;'>If you have any questions, feel free to visit our website.</p>
+                                                    <hr style='border: 0; border-top: 1px solid #f1f5f9; margin: 32px 0;' />
+                                                    <p style='font-size: 14px; color: #94a3b8; font-weight: 500;'>Best regards,<br/><span style='color: #7c3aed;'>The NexCode Team</span></p>
                                                 </div>";
 
                                             Console.WriteLine($"[HackathonApplicationController] Triggering email for {memberEmail}...");

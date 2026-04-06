@@ -42,6 +42,23 @@ export default function App() {
     { number: "Growing", label: "Community Network" }
   ];
 
+  const featuredTasks = [
+    { title: "AI Revolution 2026", organizer: "TechForward", date: "April 15-17, 2026", prize: "$50,000", tags: ["AI/ML", "Python"] },
+    { title: "EcoTech Challenge", organizer: "GreenInno", date: "May 5-7, 2026", prize: "$30,000", tags: ["Sustainability", "IoT"] },
+    { title: "Web3 Future Summit", organizer: "CryptoCore", date: "June 20-22, 2026", prize: "20 ETH", tags: ["Blockchain", "Solidity"] }
+  ];
+
+  const steps = [
+    { id: "01", title: "Discover", text: "Browse through hundreds of verified hackathons from around the globe." },
+    { id: "02", title: "Build", text: "Join teams, brainstorm ideas, and start building your innovation." },
+    { id: "03", title: "Succeed", text: "Submit your project, win amazing prizes, and scale your career." }
+  ];
+
+  const testimonials = [
+    { name: "Alex Rivera", role: "Winning Hacker @ AI Global", text: "NexCode transformed the way I find and participate in hackathons. The dashboard is a lifesaver." },
+    { name: "Sarah Chen", role: "Director of Innovation, GreenInno", text: "As a host, NexCode provides the tools to organize at scale while building a real community." }
+  ];
+
   return (<>
 
 
@@ -162,7 +179,123 @@ export default function App() {
           ))}
         </div>
       </section>
-      {/* FOOTER */}
+
+      {/* FEATURED HACKATHONS */}
+      <section className="py-24 bg-white dark:bg-slate-900 px-6 transition-colors duration-500 overflow-hidden relative">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-violet-500/5 dark:bg-violet-500/5 blur-[120px] rounded-full pointer-events-none"></div>
+        
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-4">
+              Featured Competitions
+            </h2>
+            <p className="text-slate-600 dark:text-slate-400 text-lg">
+              Explore some of the most prestigious events currently live on our platform.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {featuredTasks.map((h, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.5 }}
+                className="bg-slate-50 dark:bg-slate-800/40 p-8 rounded-[2.5rem] border border-slate-200 dark:border-white/5 hover:border-violet-500/50 transition-all duration-300 flex flex-col justify-between group shadow-lg hover:shadow-2xl hover:-translate-y-2"
+              >
+                <div>
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {h.tags.map(tag => (
+                      <span key={tag} className="px-3 py-1 rounded-full bg-violet-100 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 text-xs font-bold uppercase tracking-wider">{tag}</span>
+                    ))}
+                  </div>
+                  <h3 className="text-2xl font-bold mb-2 text-slate-900 dark:text-white leading-tight">{h.title}</h3>
+                  <p className="text-slate-500 dark:text-slate-400 text-sm font-medium mb-6">by {h.organizer}</p>
+                  
+                  <div className="space-y-3 mb-8">
+                    <div className="flex items-center gap-3 text-slate-600 dark:text-slate-300">
+                      <FiCalendar className="text-violet-500" />
+                      <span className="text-sm font-medium">{h.date}</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-slate-600 dark:text-slate-300 font-bold">
+                      <Zap className="text-fuchsia-500" size={18} />
+                      <span className="text-sm">{h.prize} prize pool</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <button className="w-full py-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-white/10 text-slate-700 dark:text-slate-300 font-bold text-sm hover:bg-slate-900 hover:text-white dark:hover:bg-violet-600 dark:hover:text-white transition-all cursor-pointer">
+                  View Details
+                </button>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* HOW IT WORKS */}
+      <section className="py-24 bg-slate-100 dark:bg-slate-950 px-6 transition-colors duration-500 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-4">
+              How It <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-fuchsia-500">Works</span>
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-12 relative">
+             <div className="hidden lg:block absolute top-[60px] left-[10%] right-[10%] h-[2px] bg-gradient-to-r from-transparent via-violet-300 dark:via-white/10 to-transparent"></div>
+            
+            {steps.map((s, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.5 }}
+                className="text-center group"
+              >
+                <div className="w-20 h-20 rounded-3xl bg-white dark:bg-slate-900 border-2 border-violet-500 dark:border-violet-400 text-violet-600 dark:text-violet-400 text-3xl font-black flex items-center justify-center mx-auto mb-8 shadow-xl group-hover:scale-110 transition-transform relative z-10">
+                  {s.id}
+                </div>
+                <h3 className="text-2xl font-bold mb-4 text-slate-900 dark:text-white uppercase tracking-wider">{s.title}</h3>
+                <p className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed max-w-[280px] mx-auto font-medium">
+                  {s.text}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* TESTIMONIALS */}
+      <section className="py-24 bg-white dark:bg-slate-900 px-6 transition-colors duration-500 relative overflow-hidden text-center">
+        <div className="max-w-4xl mx-auto relative z-10">
+          <h2 className="text-4xl font-bold text-slate-900 dark:text-white mb-16 uppercase tracking-widest">Community Voice</h2>
+          
+          <div className="grid md:grid-cols-2 gap-8">
+            {testimonials.map((t, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="bg-slate-50 dark:bg-slate-800/40 p-10 rounded-[3rem] text-left border border-slate-200 dark:border-white/5 relative"
+              >
+                <div className="text-violet-500 text-5xl font-serif absolute top-6 right-8 opacity-20">"</div>
+                <p className="text-lg italic text-slate-600 dark:text-slate-300 mb-8 leading-relaxed font-medium">
+                  "{t.text}"
+                </p>
+                <div>
+                  <h4 className="text-slate-900 dark:text-white font-black text-xl">{t.name}</h4>
+                  <p className="text-violet-600 dark:text-violet-400 text-sm font-bold tracking-tight uppercase">{t.role}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <footer className="bg-slate-100 dark:bg-slate-950 border-t border-slate-200 dark:border-white/5 py-16 px-6 transition-colors duration-500">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
