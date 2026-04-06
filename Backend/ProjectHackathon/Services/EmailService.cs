@@ -62,11 +62,17 @@ namespace ProjectHackathon.Services
             }
             catch (SmtpException smtpEx)
             {
-                Console.WriteLine($"[EmailService] SMTP Error sending to {toEmail}: {smtpEx.StatusCode} - {smtpEx.Message}");
+                string error = $"[{DateTime.Now}] SMTP Error sending to {toEmail}: Status={smtpEx.StatusCode}, Message={smtpEx.Message}";
+                if (smtpEx.InnerException != null) error += $" | Inner: {smtpEx.InnerException.Message}";
+                Console.WriteLine(error);
+                System.IO.File.AppendAllText("email_logs.txt", error + Environment.NewLine);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[EmailService] General Error sending to {toEmail}: {ex.GetType().Name} - {ex.Message}");
+                string error = $"[{DateTime.Now}] General Error sending to {toEmail}: {ex.GetType().Name} - {ex.Message}";
+                if (ex.InnerException != null) error += $" | Inner: {ex.InnerException.Message}";
+                Console.WriteLine(error);
+                System.IO.File.AppendAllText("email_logs.txt", error + Environment.NewLine);
             }
         }
     }
