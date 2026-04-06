@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Bookmark, Globe, Calendar, Zap, ArrowUpRight } from 'lucide-react'
+import { Bookmark, Globe, Calendar, Zap, Info } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 const Card = (props) => {
@@ -51,14 +51,24 @@ const Card = (props) => {
       {/* Background Glows */}
       <div className="absolute top-[-10%] left-[-10%] w-32 h-32 bg-violet-600/5 blur-[50px] rounded-full pointer-events-none group-hover:bg-violet-600/10 transition-colors"></div>
 
-      {/* Top Actions (Hover only) */}
-      <div className="absolute top-8 right-8 flex gap-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity">
+      {/* Top Actions Symbols */}
+      <div className="absolute top-8 right-8 flex gap-3 z-30 opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0">
+        {props.websiteLink && (
+          <button 
+            onClick={openWebsite}
+            title="Visit Website"
+            className="w-10 h-10 rounded-2xl flex items-center justify-center cursor-pointer transition-all bg-slate-900 border border-slate-800 text-slate-400 hover:text-cyan-400 hover:border-cyan-500/30 hover:shadow-[0_0_15px_-3px_rgba(34,211,238,0.3)] shadow-lg"
+          >
+            <Globe size={18} strokeWidth={2.5} />
+          </button>
+        )}
         <button 
           onClick={toggleSave}
-          className={`w-9 h-9 rounded-full flex items-center justify-center cursor-pointer transition bg-slate-900/80 border border-slate-800 ${
-            isSaved ? 'text-violet-500' : 'text-slate-500 hover:text-violet-500'
+          title={isSaved ? "Unsave" : "Save"}
+          className={`w-10 h-10 rounded-2xl flex items-center justify-center cursor-pointer transition-all bg-slate-900 border border-slate-800 shadow-lg ${
+            isSaved ? 'text-violet-500 border-violet-500/30 shadow-[0_0_15px_-3px_rgba(139,92,246,0.3)]' : 'text-slate-500 hover:text-violet-500 hover:border-violet-500/30'
           }`}>
-          <Bookmark size={16} className={isSaved ? "fill-current" : ""} />
+          <Bookmark size={18} strokeWidth={isSaved ? 2 : 2.5} className={isSaved ? "fill-current" : ""} />
         </button>
       </div>
 
@@ -73,7 +83,7 @@ const Card = (props) => {
         </div>
 
         {/* Title & Host */}
-        <div className='space-y-1.5'>
+        <div className='grow space-y-1.5'>
           <h3 className="text-2xl md:text-3xl font-black text-white leading-tight tracking-tight group-hover:text-violet-400 transition-colors">
             {props.title || "AI Revolution 2026"}
           </h3>
@@ -85,13 +95,13 @@ const Card = (props) => {
         {/* Info Rows */}
         <div className="space-y-4">
           <div className="flex items-center gap-4 text-slate-100">
-            <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center border border-slate-800">
+            <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center border border-slate-800 shadow-inner">
               <Calendar size={18} className="text-violet-500" />
             </div>
             <span className="text-base font-bold tracking-tight">{formatDate(props.eventDate || props.time)}</span>
           </div>
           <div className="flex items-center gap-4 text-slate-100">
-            <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center border border-slate-800">
+            <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center border border-slate-800 shadow-inner">
               <Zap size={18} className="text-fuchsia-500" />
             </div>
             <div className='flex flex-col'>
@@ -104,21 +114,21 @@ const Card = (props) => {
       
       {/* Dual Action Buttons */}
       <div className='mt-8 pt-6 border-t border-slate-800/50 flex flex-col gap-3'>
-        <div className='flex gap-3'>
+        <div className='flex gap-4'>
           <button 
-            onClick={openWebsite}
-            className="flex-1 py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all cursor-pointer border border-slate-800 text-slate-300 hover:bg-slate-900 hover:text-white hover:border-violet-500/40 flex items-center justify-center gap-2"
+            onClick={props.onViewDetails}
+            className="flex-1 py-4.5 rounded-2xl font-black text-xs uppercase tracking-widest transition-all cursor-pointer border border-slate-800 text-slate-300 hover:bg-slate-950 hover:text-white hover:border-violet-500/40 flex items-center justify-center gap-2 group/btn"
           >
-            View Details <ArrowUpRight size={14} className="opacity-60" />
+            <Info size={14} className="text-violet-500 opacity-60 group-hover/btn:opacity-100 transition-opacity" /> View Details
           </button>
           
           <button 
             onClick={props.onApply}
             disabled={props.disabled}
-            className={`flex-1 py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all cursor-pointer border shadow-lg ${
+            className={`flex-1 py-4.5 rounded-2xl font-black text-xs uppercase tracking-widest transition-all cursor-pointer border shadow-lg ${
             props.disabled 
-              ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20 cursor-default shadow-none' 
-              : 'bg-white text-slate-950 border-white hover:bg-violet-600 hover:text-white hover:border-violet-500 active:scale-[0.98]'
+              ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20 cursor-default shadow-none translate-y-0 opacity-80' 
+              : 'bg-white text-slate-950 border-white hover:bg-violet-600 hover:text-white hover:border-violet-500 active:scale-[0.98] hover:-translate-y-1'
           }`}>
             {props.disabled ? "Applied" : "Apply Now"}
           </button>

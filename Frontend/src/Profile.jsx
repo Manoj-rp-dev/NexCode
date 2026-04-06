@@ -12,6 +12,7 @@ import defaultProfile from "/defaultProfile.png";
 import toast from 'react-hot-toast';
 import Card from './Card';
 import ApplicationForm from './ApplicationForm';
+import HackathonDetailsModal from './HackathonDetailsModal';
 import { Sparkles, Camera, Trophy, Medal } from 'lucide-react';
 import { Link } from "react-router-dom";
 import { api } from "./services/api";
@@ -57,6 +58,8 @@ const Profile = () => {
     }
   };
 
+  const [viewDetailsHackathon, setViewDetailsHackathon] = useState(null);
+  
   const visibleNotifications = appliedHackathons.filter(a => !a.isNotificationCleared);
   
   // Discover state
@@ -565,6 +568,7 @@ const Profile = () => {
                   duration={formatPrize} 
                   subtitle="Prize Money" 
                   disabled={isApplied}
+                  onViewDetails={() => setViewDetailsHackathon(h)}
                   onApply={isApplied ? undefined : () => setSelectedHackathon(h)} 
                 />
               );
@@ -583,6 +587,13 @@ const Profile = () => {
               .then(data => setAppliedHackathons(data))
               .catch(err => console.error(err));
           }}
+        />
+      )}
+      {viewDetailsHackathon && (
+        <HackathonDetailsModal 
+          hackathon={viewDetailsHackathon}
+          onClose={() => setViewDetailsHackathon(null)}
+          onApply={(h) => setSelectedHackathon(h)}
         />
       )}
       <Footer />

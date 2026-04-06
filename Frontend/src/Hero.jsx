@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Card from './Card';
 import Footer from "./Footer";
 import ApplicationForm from './ApplicationForm';
+import HackathonDetailsModal from './HackathonDetailsModal';
 import { Sparkles, Trophy, Rocket, Globe, Zap, Search, LayoutGrid, List } from 'lucide-react';
 import { api } from "./services/api";
 import { getUserId } from "./utils/auth";
@@ -14,6 +15,7 @@ const Hero = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedHackathon, setSelectedHackathon] = useState(null);
+  const [viewDetailsHackathon, setViewDetailsHackathon] = useState(null);
   const [filterType, setFilterType] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState('grid');
@@ -119,7 +121,7 @@ const Hero = () => {
                     </h3>
                     <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 font-semibold text-slate-700 dark:text-slate-300'>
                         {[
-                            'By HackerNews',
+                            'By Nexcode',
                             'Online',
                             'Offline',
                             'Upcoming',
@@ -247,6 +249,21 @@ const Hero = () => {
                       .catch(err => console.error(err));
                   }
                 }} 
+              />
+            )}
+
+            {viewDetailsHackathon && (
+              <HackathonDetailsModal 
+                hackathon={viewDetailsHackathon}
+                onClose={() => setViewDetailsHackathon(null)}
+                onApply={(h) => setSelectedHackathon(h)}
+              />
+            )}
+            {viewDetailsHackathon && (
+              <HackathonDetailsModal 
+                hackathon={viewDetailsHackathon}
+                onClose={() => setViewDetailsHackathon(null)}
+                onApply={(h) => setSelectedHackathon(h)}
               />
             )}
             <Footer/>

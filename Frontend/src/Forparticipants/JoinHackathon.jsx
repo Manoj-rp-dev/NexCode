@@ -3,6 +3,7 @@ import ApplicationForm from '../ApplicationForm';
 import { api } from '../services/api';
 import { getUserId } from '../utils/auth';
 import Card from '../Card';
+import HackathonDetailsModal from '../HackathonDetailsModal';
 
 
 const JoinHackathon = () => {
@@ -20,6 +21,7 @@ const JoinHackathon = () => {
 
   const [appliedIds, setAppliedIds] = useState([]);
   const [selectedHackathon, setSelectedHackathon] = useState(null);
+  const [viewDetailsHackathon, setViewDetailsHackathon] = useState(null);
 
 
   useEffect(() => {
@@ -178,6 +180,7 @@ const JoinHackathon = () => {
                     duration={formatPrize}
                     subtitle="Prize Money"
                     disabled={isApplied}
+                    onViewDetails={() => setViewDetailsHackathon(h)}
                     onApply={isApplied ? undefined : () => setSelectedHackathon(h)}
                   />
                 );
@@ -199,6 +202,13 @@ const JoinHackathon = () => {
                 .catch(err => console.error(err));
             }
           }} 
+        />
+      )}
+      {viewDetailsHackathon && (
+        <HackathonDetailsModal 
+          hackathon={viewDetailsHackathon}
+          onClose={() => setViewDetailsHackathon(null)}
+          onApply={(h) => setSelectedHackathon(h)}
         />
       )}
     </div>
