@@ -146,14 +146,14 @@ export default function Resources() {
               </h2>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
               {section.items.map((item, itemIdx) => (
                 <a 
                   key={itemIdx} 
                   href={item.link} 
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`group bg-white/70 dark:bg-slate-900/50 backdrop-blur-xl border border-slate-200 dark:border-white/10 p-6 rounded-[2rem] shadow-sm hover:shadow-xl dark:shadow-[0_0_20px_rgba(0,0,0,0.2)] dark:hover:shadow-[0_0_30px_rgba(0,0,0,0.4)] transition-all duration-300 hover:-translate-y-2 flex flex-col justify-between min-h-[180px] ${getBorderHoverClasses(section.color)}`}
+                  className={`group w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-slate-200 dark:border-white/10 p-6 rounded-[2rem] shadow-sm hover:shadow-xl dark:shadow-[0_0_20px_rgba(0,0,0,0.2)] dark:hover:shadow-[0_0_30px_rgba(0,0,0,0.4)] transition-[transform,shadow,border-color] duration-300 hover:-translate-y-2 flex flex-col justify-between min-h-[180px] will-change-transform ${getBorderHoverClasses(section.color)}`}
                 >
                   <div>
                     <div className="flex justify-between items-start mb-4">

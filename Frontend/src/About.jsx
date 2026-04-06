@@ -219,10 +219,15 @@ export default function About() {
 }
 
 function Stat({ number, label }) {
+  const isLong = number.length > 5;
   return (
-    <div className="p-4 sm:p-6 rounded-3xl bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-white/5 shadow-sm hover:shadow-xl dark:shadow-none transition-shadow flex flex-col justify-center items-center">
-      <h3 className="text-2xl sm:text-4xl lg:text-5xl font-black mb-1 sm:mb-3 text-transparent bg-clip-text bg-gradient-to-br from-violet-600 to-fuchsia-500 dark:from-fuchsia-400 dark:to-cyan-400 drop-shadow-sm w-full truncate sm:overflow-visible sm:whitespace-normal">{number}</h3>
-      <p className="text-slate-600 dark:text-slate-400 font-bold tracking-wider uppercase text-[10px] sm:text-sm mt-1 sm:mt-2">{label}</p>
+    <div className="p-4 sm:p-8 rounded-[2rem] bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-white/5 shadow-sm hover:shadow-xl dark:shadow-none transition-all flex flex-col justify-center items-center group overflow-hidden">
+      <h3 className={`${isLong ? 'text-xl sm:text-3xl lg:text-4xl' : 'text-2xl sm:text-4xl lg:text-5xl'} font-black mb-1 sm:mb-3 text-transparent bg-clip-text bg-gradient-to-br from-violet-600 to-fuchsia-500 dark:from-fuchsia-400 dark:to-cyan-400 drop-shadow-sm leading-tight transition-transform group-hover:scale-105 duration-300 whitespace-nowrap`}>
+        {number}
+      </h3>
+      <p className="text-slate-600 dark:text-slate-400 font-extrabold tracking-widest uppercase text-[10px] sm:text-xs mt-1 sm:mt-2 opacity-80 text-center">
+        {label}
+      </p>
     </div>
   );
 }
