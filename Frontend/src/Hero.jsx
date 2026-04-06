@@ -10,7 +10,7 @@ import { getUserId } from "./utils/auth";
 
 const Hero = () => {
   const [hackathons, setHackathons] = useState([]);
-  const [appliedIds, setAppliedIds] = useState(new Set());
+  const [appliedIds, setAppliedIds] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedHackathon, setSelectedHackathon] = useState(null);
@@ -41,7 +41,7 @@ const Hero = () => {
       if (!id) return;
       try {
         const data = await api.participant.getAppliedHackathons(id);
-        const ids = new Set(data.map(h => h.hackathonId || h.hackathonID || h.HostHackathonID));
+        const ids = data.map(h => Number(h.hackathonId || h.hackathonID || h.HostHackathonID));
         setAppliedIds(ids);
       } catch (err) {
         console.error('Failed to fetch applied IDs', err);
@@ -239,7 +239,15 @@ const Hero = () => {
             {selectedHackathon && (
               <ApplicationForm 
                 hackathon={selectedHackathon} 
-                onClose={() => setSelectedHackathon(null)} 
+                onClose={() => {
+                  setSelectedHackathon(null);
+                  const id = getUserId();
+                  if (id) {
+                    api.participant.getAppliedHackathons(id)
+                      .then(data => setAppliedIds(data.map(a => Number(a.hackathonId || a.hackathonID || a.HostHackathonID))))
+                      .catch(err => console.error(err));
+                  }
+                }} 
               />
             )}
             <Footer/>

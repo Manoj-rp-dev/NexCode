@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Sun, Moon, Terminal } from "lucide-react";
 import Logo from "./Forparticipants/Logo";
-import Hero from "./Hero.jsx";
 import { useTheme } from "./ThemeContext.jsx";
 import { getUserRole } from "./utils/auth";
 
