@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Globe, Shield, Zap } from "lucide-react";
 import Navbar from "./Navbar";
 import { getUserRole } from "./utils/auth";
+import Card from "./Card";
 
 export default function App() {
   const navigate = useNavigate();
@@ -196,39 +197,16 @@ export default function App() {
 
           <div className="grid md:grid-cols-3 gap-8">
             {featuredTasks.map((h, i) => (
-              <motion.div
+              <Card
                 key={i}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.5 }}
-                className="bg-slate-50 dark:bg-slate-800/40 p-8 rounded-[2.5rem] border border-slate-200 dark:border-white/5 hover:border-violet-500/50 transition-all duration-300 flex flex-col justify-between group shadow-lg hover:shadow-2xl hover:-translate-y-2"
-              >
-                <div>
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {h.tags.map(tag => (
-                      <span key={tag} className="px-3 py-1 rounded-full bg-violet-100 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 text-xs font-bold uppercase tracking-wider">{tag}</span>
-                    ))}
-                  </div>
-                  <h3 className="text-2xl font-bold mb-2 text-slate-900 dark:text-white leading-tight">{h.title}</h3>
-                  <p className="text-slate-500 dark:text-slate-400 text-sm font-medium mb-6">by {h.organizer}</p>
-                  
-                  <div className="space-y-3 mb-8">
-                    <div className="flex items-center gap-3 text-slate-600 dark:text-slate-300">
-                      <FiCalendar className="text-violet-500" />
-                      <span className="text-sm font-medium">{h.date}</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-slate-600 dark:text-slate-300 font-bold">
-                      <Zap className="text-fuchsia-500" size={18} />
-                      <span className="text-sm">{h.prize} prize pool</span>
-                    </div>
-                  </div>
-                </div>
-                
-                <button className="w-full py-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-white/10 text-slate-700 dark:text-slate-300 font-bold text-sm hover:bg-slate-900 hover:text-white dark:hover:bg-violet-600 dark:hover:text-white transition-all cursor-pointer">
-                  View Details
-                </button>
-              </motion.div>
+                title={h.title}
+                company={h.organizer}
+                eventDate={h.date}
+                duration={h.prize}
+                subtitle="prize pool"
+                tags={h.tags}
+                onApply={() => navigate('/Hero')}
+              />
             ))}
           </div>
         </div>

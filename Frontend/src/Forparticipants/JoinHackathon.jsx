@@ -167,6 +167,7 @@ const JoinHackathon = () => {
                     hackathonId={hId}
                     logo={logoSrc}
                     company={companyName}
+                    eventDate={h.eventDate}
                     time={isRecent}
                     title={h.hackathonName}
                     mode={h.mode}

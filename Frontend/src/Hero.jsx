@@ -181,7 +181,7 @@ const Hero = () => {
                 </div>
             </motion.div>
             <div className="bg-slate-100 dark:bg-slate-900 border-y border-slate-200 dark:border-white/5 py-20 px-6 transition-colors duration-500">
-              <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-40 justify-items-center">
+            <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12 justify-items-center">
                    {loading && <div className="py-20 text-center col-span-full">Loading hackathons...</div>}
                    {error && <div className="py-20 text-center text-red-500 font-bold col-span-full">{error}</div>}
                    {!loading && !error && filteredHackathons.length === 0 && (
@@ -220,6 +220,7 @@ const Hero = () => {
                             logo={logoSrc}
                             company={h.organizationName || h.hostName || "Host"}
                             websiteLink={h.websiteLink}
+                           eventDate={h.eventDate}
                            time={isRecent}
                            title={h.hackathonName}
                            mode={h.mode}

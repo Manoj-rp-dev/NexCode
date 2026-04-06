@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "./Logo";
+import { Eye, EyeOff } from 'lucide-react';
 import { api } from "../services/api";
 
 
 const Login = () => {
   const navigate = useNavigate();
   const [message, setMessage] = useState({ type: '', text: '' });
+  const [showPassword, setShowPassword] = useState(false);
   
   const {
     register,
@@ -83,12 +85,21 @@ const Login = () => {
           
           <div>
             <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Password</label>
-            <input
-              className="w-full h-12 text-slate-900 dark:text-white bg-slate-100 dark:bg-slate-950/50 rounded-xl px-4 border border-slate-200 dark:border-white/10 focus:outline-none focus:border-violet-500 dark:focus:border-fuchsia-500 focus:ring-1 focus:ring-violet-500 dark:focus:ring-fuchsia-500 transition-all shadow-inner"
-              type="password"
-              placeholder="Enter your password"
-              {...register("password", { required: "Password is required" })} 
-            />
+            <div className="relative">
+              <input
+                className="w-full h-12 text-slate-900 dark:text-white bg-slate-100 dark:bg-slate-950/50 rounded-xl px-4 pr-12 border border-slate-200 dark:border-white/10 focus:outline-none focus:border-violet-500 dark:focus:border-fuchsia-500 focus:ring-1 focus:ring-violet-500 dark:focus:ring-fuchsia-500 transition-all shadow-inner"
+                type={showPassword ? 'text' : 'password'}
+                placeholder="Enter your password"
+                {...register("password", { required: "Password is required" })} 
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-violet-500 transition-colors cursor-pointer"
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
             <p className="h-5 text-red-500 dark:text-red-400 text-xs font-medium mt-1 ml-1">
               {errors.password?.message}
             </p>

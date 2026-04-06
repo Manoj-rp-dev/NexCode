@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import { BrowserRouter } from "react-router-dom";
 import App from './App.jsx'
-import Card from './Card.jsx';
 import Footer from './Footer.jsx';
 import { FaAmericanSignLanguageInterpreting } from 'react-icons/fa';
 import Signup from './Forparticipants/Signup.jsx';

@@ -499,7 +499,7 @@ const Profile = () => {
                               (domain ? `https://logo.clearbit.com/${domain}` : `https://api.dicebear.com/9.x/shapes/svg?seed=${encodeURIComponent(companyName)}`);
               const formatPrize = (h.prizePool !== null && h.prizePool !== undefined && h.prizePool !== "") ? `$${Number(h.prizePool).toLocaleString()}` : "TBA";
               return (
-                <Card key={index} hackathonId={hId} logo={logoSrc} company={companyName} websiteLink={h.websiteLink} title={h.hackathonName} mode={h.mode} type={h.hackathonType} participationType={h.participationType} duration={formatPrize} subtitle="Prize Money" actionText="Applied" disabled={true} />
+                <Card key={index} hackathonId={hId} logo={logoSrc} company={companyName} websiteLink={h.websiteLink} eventDate={h.eventDate} title={h.hackathonName} mode={h.mode} type={h.hackathonType} participationType={h.participationType} duration={formatPrize} subtitle="Prize Money" actionText="Applied" disabled={true} />
               );
             })
           }
@@ -557,6 +557,7 @@ const Profile = () => {
                   logo={logoSrc} 
                   company={companyName} 
                   websiteLink={h.websiteLink} 
+                  eventDate={h.eventDate}
                   title={h.hackathonName} 
                   mode={h.mode} 
                   type={h.hackathonType} 

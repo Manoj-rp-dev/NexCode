@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Logo from "./Forparticipants/Logo";
 import { Link } from "react-router-dom";
+import { Eye, EyeOff } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
 import { api } from "./services/api";
 
@@ -9,6 +10,7 @@ const HostSignup = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const {
     register,
@@ -155,18 +157,27 @@ const HostSignup = () => {
           </div>
           <div>
             <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2 mt-2 lg:mt-0">Password</label>
-            <input
-              type='password'
-              className={inputClass}
-              placeholder='Create a strong password'
-              {...register('password', {
-                required: 'Password is required',
-                minLength: {
-                  value: 6,
-                  message: 'Minimum 6 characters',
-                },
-              })}
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                className={`${inputClass} pr-12`}
+                placeholder='Create a strong password'
+                {...register('password', {
+                  required: 'Password is required',
+                  minLength: {
+                    value: 6,
+                    message: 'Minimum 6 characters',
+                  },
+                })}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-violet-500 transition-colors cursor-pointer"
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
             <p className={errorClass}>{errors.password?.message}</p>
           </div>
         </div>

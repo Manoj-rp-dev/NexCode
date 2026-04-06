@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { Shield, Lock, User, ArrowRight, Home } from 'lucide-react';
+import { Shield, Lock, User, ArrowRight, Home, Eye, EyeOff } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Logo from './Forparticipants/Logo';
 import { api } from "./services/api";
@@ -10,6 +10,7 @@ import { api } from "./services/api";
 const AdminLogin = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
@@ -77,12 +78,21 @@ const AdminLogin = () => {
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-500 group-focus-within:text-violet-400 transition-colors">
                   <Lock size={18} />
                 </div>
-                <input 
-                  type="password"
-                  {...register("Password", { required: "Password is required" })}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-violet-500/50 focus:border-violet-500 transition-all"
-                  placeholder="Enter admin password"
-                />
+                <div className="relative">
+                  <input 
+                    type={showPassword ? 'text' : 'password'}
+                    {...register("Password", { required: "Password is required" })}
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-12 text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-violet-500/50 focus:border-violet-500 transition-all font-sans"
+                    placeholder="Enter admin password"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-violet-400 transition-colors cursor-pointer"
+                  >
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </button>
+                </div>
               </div>
               {errors.Password && <p className="text-red-400 text-xs font-bold ml-1">{errors.Password.message}</p>}
             </div>
