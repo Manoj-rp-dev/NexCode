@@ -1,6 +1,8 @@
+import React, { useState, useEffect } from 'react';
 import ApplicationForm from '../ApplicationForm';
 import { api } from '../services/api';
 import { getUserId } from '../utils/auth';
+import Card from '../Card';
 
 
 const JoinHackathon = () => {
@@ -16,7 +18,7 @@ const JoinHackathon = () => {
   // Extract unique types for the filter dropdown
   const uniqueTypes = ['All', ...new Set(hackathons.map(h => h.hackathonType).filter(Boolean))];
 
-  const [appliedIds, setAppliedIds] = useState(new Set());
+  const [appliedIds, setAppliedIds] = useState([]);
   const [selectedHackathon, setSelectedHackathon] = useState(null);
 
 
@@ -37,7 +39,7 @@ const JoinHackathon = () => {
         if (!id) return;
         try {
           const data = await api.participant.getAppliedHackathons(id);
-          const ids = new Set(data.map(h => h.hackathonId || h.hackathonID || h.HostHackathonID));
+          const ids = data.map(h => Number(h.hackathonId || h.hackathonID || h.HostHackathonID));
           setAppliedIds(ids);
         } catch (err) { /* ignore if not logged in */ }
       };
@@ -193,7 +195,7 @@ const JoinHackathon = () => {
             const id = getUserId();
             if (id) {
               api.participant.getAppliedHackathons(id)
-                .then(data => setAppliedIds(data.map(a => Number(a.hackathonId || a.hackathonID))))
+                .then(data => setAppliedIds(data.map(a => Number(a.hackathonId || a.hackathonID || a.HostHackathonID))))
                 .catch(err => console.error(err));
             }
           }} 
