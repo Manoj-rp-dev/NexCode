@@ -231,7 +231,8 @@ const Hero = () => {
                            duration={formatPrize}
                            subtitle="Prize Money"
                            disabled={isApplied}
-                           onApply={isApplied ? undefined : () => setSelectedHackathon(h)}
+                           onViewDetails={() => setViewDetailsHackathon(h)}
+                            onApply={isApplied ? undefined : () => setSelectedHackathon(h)}
                          />
                        );
                    })}

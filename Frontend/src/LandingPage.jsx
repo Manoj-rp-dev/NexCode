@@ -205,6 +205,7 @@ export default function App() {
                 duration={h.prize}
                 subtitle="prize pool"
                 tags={h.tags}
+                onViewDetails={() => navigate('/Hero')}
                 onApply={() => navigate('/Hero')}
               />
             ))}

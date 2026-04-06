@@ -117,7 +117,7 @@ const Card = (props) => {
         <div className='flex gap-4'>
           <button 
             onClick={props.onViewDetails}
-            className="flex-1 py-4.5 rounded-2xl font-black text-xs uppercase tracking-widest transition-all cursor-pointer border border-slate-800 text-slate-300 hover:bg-slate-950 hover:text-white hover:border-violet-500/40 flex items-center justify-center gap-2 group/btn"
+            className="flex-1 h-14 rounded-2xl font-black text-xs uppercase tracking-widest transition-all cursor-pointer border border-slate-800 text-slate-300 hover:bg-slate-950 hover:text-white hover:border-violet-500/40 flex items-center justify-center gap-2 group/btn"
           >
             <Info size={14} className="text-violet-500 opacity-60 group-hover/btn:opacity-100 transition-opacity" /> View Details
           </button>
@@ -125,7 +125,7 @@ const Card = (props) => {
           <button 
             onClick={props.onApply}
             disabled={props.disabled}
-            className={`flex-1 py-4.5 rounded-2xl font-black text-xs uppercase tracking-widest transition-all cursor-pointer border shadow-lg ${
+            className={`flex-1 h-14 rounded-2xl font-black text-xs uppercase tracking-widest transition-all cursor-pointer border shadow-lg ${
             props.disabled 
               ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20 cursor-default shadow-none translate-y-0 opacity-80' 
               : 'bg-white text-slate-950 border-white hover:bg-violet-600 hover:text-white hover:border-violet-500 active:scale-[0.98] hover:-translate-y-1'
