@@ -1,5 +1,4 @@
-USE Project;
-GO
+
 
 -- 1. Create Audit Table for Trigger
 IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'ApplicationAuditLogs')
