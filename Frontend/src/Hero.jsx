@@ -8,6 +8,7 @@ import HackathonDetailsModal from './HackathonDetailsModal';
 import { Sparkles, Trophy, Rocket, Globe, Zap, Search, LayoutGrid, List } from 'lucide-react';
 import { api } from "./services/api";
 import { getUserId } from "./utils/auth";
+import { getLogoSrc } from "./utils/imageUtils";
 
 const Hero = () => {
   const [hackathons, setHackathons] = useState([]);
@@ -169,11 +170,11 @@ const Hero = () => {
                     <div className='flex flex-col md:flex-row gap-4 mt-10'>
                         <div className="relative flex-1 group">
                           <input
-                              type='text'
-                              value={searchQuery}
-                              onChange={(e) => setSearchQuery(e.target.value)}
-                              placeholder='Search hackathons, technologies, locations...'
-                              className='w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-white/10 text-slate-900 dark:text-slate-200 rounded-xl px-6 py-4 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition shadow-inner font-medium text-lg'
+                               type='text'
+                               value={searchQuery}
+                               onChange={(e) => setSearchQuery(e.target.value)}
+                               placeholder='Search hackathons, technologies, locations...'
+                               className='w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-white/10 text-slate-900 dark:text-slate-200 rounded-xl px-6 py-4 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition shadow-inner font-medium text-lg'
                           />
                         </div>
                         <button className='px-12 py-5 bg-violet-600 hover:bg-violet-700 text-white rounded-2xl cursor-pointer font-bold text-xl shadow-lg shadow-violet-600/30 transition-all hover:-translate-y-1 active:scale-95 whitespace-nowrap'>
@@ -192,47 +193,28 @@ const Hero = () => {
                    {!loading && !error && filteredHackathons.map((h, index) => {
                        const isRecent = new Date(h.eventDate) > new Date() ? "UPCOMING" : "ENDED";
                        const companyName = h.organizationName || h.hostName || "Host";
-                       
-                       let domain = "";
-                       try { domain = new URL(h.websiteLink).hostname; } catch (e) { domain = h.websiteLink ? h.websiteLink.replace(/^https?:\/\//i,'').split('/')[0] : ""; }
-                       
-                       const formatBase64 = (data) => {
-                         if (!data || data.length < 10) return null;
-                         if (data.startsWith('data:')) return data;
-                         let mime = "image/jpeg";
-                         if (data.startsWith('iVBORw')) mime = "image/png";
-                         else if (data.startsWith('PHN2Zw')) mime = "image/svg+xml";
-                         else if (data.startsWith('R0lGOD')) mime = "image/gif";
-                         return `data:${mime};base64,${data}`;
-                       };
-
-                       const imageData = h.imageData || h.ImageData;
-                       const hostLogo = h.hostLogo || h.HostLogo;
-
-                       const logoSrc = formatBase64(imageData) || 
-                                       formatBase64(hostLogo) || 
-                                       (domain ? `https://logo.clearbit.com/${domain}` : `https://api.dicebear.com/9.x/shapes/svg?seed=${encodeURIComponent(companyName)}&backgroundColor=b6e3f4,c0aede,d1d4f9,ffdfbf,ffd5dc`);
-                       
                        const formatPrize = h.prizePool ? `$${(h.prizePool / 1000).toFixed(0)}k Pool` : "No Prize";
-                       const isApplied = appliedIds.includes(Number(h.hackathonId || h.hackathonID));
+                       const hId = h.hackathonId || h.hackathonID;
+                       const isApplied = appliedIds.includes(Number(hId));
+                       
                        return (
                          <Card 
-                           key={index}
-                           hackathonId={h.hackathonId || h.hackathonID}
-                            logo={logoSrc}
-                            company={h.organizationName || h.hostName || "Host"}
-                            websiteLink={h.websiteLink}
-                           eventDate={h.eventDate}
-                           time={isRecent}
-                           title={h.hackathonName}
-                           mode={h.mode}
-                           type={h.hackathonType}
-                           participationType={h.participationType}
-                           duration={formatPrize}
-                           subtitle="Prize Money"
-                           disabled={isApplied}
-                           onViewDetails={() => setViewDetailsHackathon(h)}
-                            onApply={isApplied ? undefined : () => setSelectedHackathon(h)}
+                            key={index}
+                            hackathonId={hId}
+                             logo={getLogoSrc(h)}
+                             company={companyName}
+                             websiteLink={h.websiteLink}
+                            eventDate={h.eventDate}
+                            time={isRecent}
+                            title={h.hackathonName}
+                            mode={h.mode}
+                            type={h.hackathonType}
+                            participationType={h.participationType}
+                            duration={formatPrize}
+                            subtitle="Prize Money"
+                            disabled={isApplied}
+                            onViewDetails={() => setViewDetailsHackathon(h)}
+                             onApply={isApplied ? undefined : () => setSelectedHackathon(h)}
                          />
                        );
                    })}
@@ -258,13 +240,7 @@ const Hero = () => {
                 hackathon={viewDetailsHackathon}
                 onClose={() => setViewDetailsHackathon(null)}
                 onApply={(h) => setSelectedHackathon(h)}
-              />
-            )}
-            {viewDetailsHackathon && (
-              <HackathonDetailsModal 
-                hackathon={viewDetailsHackathon}
-                onClose={() => setViewDetailsHackathon(null)}
-                onApply={(h) => setSelectedHackathon(h)}
+                isApplied={appliedIds.includes(Number(viewDetailsHackathon.hackathonID || viewDetailsHackathon.hackathonId || viewDetailsHackathon.HostHackathonID))}
               />
             )}
             <Footer/>

@@ -558,6 +558,7 @@ const Profile = () => {
           hackathon={viewDetailsHackathon}
           onClose={() => setViewDetailsHackathon(null)}
           onApply={(h) => setSelectedHackathon(h)}
+          isApplied={appliedHackathons.some(a => Number(a.hackathonId || a.HostHackathonID || a.hackathonID) === Number(viewDetailsHackathon.hackathonId || viewDetailsHackathon.HostHackathonID || viewDetailsHackathon.hackathonID))}
         />
       )}
       <Footer />

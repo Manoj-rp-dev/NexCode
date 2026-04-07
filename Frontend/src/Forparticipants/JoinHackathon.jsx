@@ -183,6 +183,7 @@ const JoinHackathon = () => {
           hackathon={viewDetailsHackathon}
           onClose={() => setViewDetailsHackathon(null)}
           onApply={(h) => setSelectedHackathon(h)}
+          isApplied={appliedIds.includes(Number(viewDetailsHackathon.hackathonID || viewDetailsHackathon.hackathonId || viewDetailsHackathon.HostHackathonID))}
         />
       )}
     </div>

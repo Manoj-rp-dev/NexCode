@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { IoClose, IoCalendarOutline, IoLocationOutline, IoPeopleOutline, IoTrophyOutline, IoGlobeOutline } from "react-icons/io5";
 import { getLogoSrc } from "./utils/imageUtils";
 
-const HackathonDetailsModal = ({ hackathon, onClose, onApply }) => {
+const HackathonDetailsModal = ({ hackathon, onClose, onApply, isApplied }) => {
   if (!hackathon) return null;
 
   return (
@@ -123,12 +123,18 @@ const HackathonDetailsModal = ({ hackathon, onClose, onApply }) => {
                 </button>
                <button 
                   onClick={() => {
+                     if (isApplied) return;
                      onClose();
                      if (onApply) onApply(hackathon);
                   }}
-                  className="flex-1 sm:flex-none px-10 py-3.5 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-black text-sm uppercase tracking-widest shadow-xl hover:-translate-y-1 active:scale-[0.98] transition-all"
+                  disabled={isApplied}
+                  className={`flex-1 sm:flex-none px-10 py-3.5 rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl transition-all ${
+                    isApplied 
+                      ? 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 cursor-default' 
+                      : 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:-translate-y-1 active:scale-[0.98]'
+                  }`}
                 >
-                  Apply Now
+                  {isApplied ? "Applied" : "Apply Now"}
                 </button>
             </div>
           </div>
