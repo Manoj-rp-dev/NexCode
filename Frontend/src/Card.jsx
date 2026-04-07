@@ -46,10 +46,10 @@ const Card = (props) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
-      className='bg-slate-900/60 backdrop-blur-3xl p-8 md:p-10 rounded-[3rem] border border-white/10 transition-all duration-300 flex flex-col justify-between w-full sm:w-[380px] min-h-[460px] relative group hover:border-violet-500/50 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.5)] hover:shadow-violet-600/10 overflow-hidden'
+      className='bg-slate-800/40 backdrop-blur-3xl p-8 md:p-10 rounded-[3rem] border border-white/20 transition-all duration-300 flex flex-col justify-between w-full sm:w-[380px] min-h-[460px] relative group hover:border-violet-400 hover:shadow-[0_20px_80px_-20px_rgba(139,92,246,0.3)] shadow-[0_20px_50px_-20px_rgba(0,0,0,0.5)] overflow-hidden'
     >
       {/* Background Glows */}
-      <div className="absolute top-[-10%] left-[-10%] w-32 h-32 bg-violet-600/10 blur-[50px] rounded-full pointer-events-none group-hover:bg-violet-600/20 transition-colors"></div>
+      <div className="absolute top-[-10%] left-[-10%] w-32 h-32 bg-violet-600/15 blur-[50px] rounded-full pointer-events-none group-hover:bg-violet-600/25 transition-colors"></div>
 
       {/* Top Actions Symbols */}
       <div className="absolute top-8 right-8 flex gap-3 z-30 opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0">
