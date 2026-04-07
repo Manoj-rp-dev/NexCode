@@ -82,7 +82,7 @@ const HackathonDetailsModal = ({ hackathon, onClose, onApply }) => {
             {/* Organizer & Official Link Info */}
             <div className="p-8 rounded-[2rem] bg-slate-900 border border-white/5 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl">
                 <div className="flex items-center gap-5">
-                  <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center border border-white/5 p-2 overflow-hidden">
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center overflow-hidden">
                      <img 
                         src={getLogoSrc(hackathon)} 
                         className="w-full h-full object-contain rounded-full" 
