@@ -82,14 +82,25 @@ const Card = (props) => {
           ))}
         </div>
 
-        {/* Title & Host */}
-        <div className='grow space-y-1.5'>
-          <h3 className="text-2xl md:text-3xl font-black text-white leading-tight tracking-tight group-hover:text-violet-400 transition-colors">
-            {props.title || "AI Revolution 2026"}
-          </h3>
-          <p className="text-slate-400 text-base font-bold flex items-center gap-2">
-            by <span className="text-slate-200">{props.company || "TechForward"}</span>
-          </p>
+        {/* Logo, Title & Host */}
+        <div className='grow space-y-4'>
+          <div className="flex items-center gap-4">
+             <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center border border-white/5 p-2 overflow-hidden shadow-lg shadow-black/20">
+                <img 
+                   src={props.logo} 
+                   className="w-full h-full object-contain" 
+                   alt="Logo" 
+                />
+             </div>
+             <div className="flex-1">
+                <h3 className="text-2xl md:text-3xl font-black text-white leading-tight tracking-tight group-hover:text-violet-400 transition-colors">
+                  {props.title || "AI Revolution 2026"}
+                </h3>
+                <p className="text-slate-400 text-base font-bold flex items-center gap-2">
+                  by <span className="text-slate-200">{props.company || "TechForward"}</span>
+                </p>
+             </div>
+          </div>
         </div>
         
         {/* Info Rows */}

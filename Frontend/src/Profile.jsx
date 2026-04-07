@@ -17,6 +17,7 @@ import { Sparkles, Camera, Trophy, Medal } from 'lucide-react';
 import { Link } from "react-router-dom";
 import { api } from "./services/api";
 import { getUserRole, getUserId } from "./utils/auth";
+import { getLogoSrc } from "./utils/imageUtils";
 
 
 const Profile = () => {
@@ -481,25 +482,7 @@ const Profile = () => {
           {appliedHackathons.filter(h => mode === "" || mode === "All" || (h.participationType && h.participationType.toLowerCase() === mode.toLowerCase())).map((h, index) => {
               const companyName = h.organizationName || h.hostName || "Host";
               const hId = h.hackathonId || h.hackathonID || h.HostHackathonID;
-              let domain = "";
-              try { domain = h.websiteLink ? new URL(h.websiteLink).hostname : ""; } catch (e) { domain = h.websiteLink ? h.websiteLink.replace(/^https?:\/\//i,'').split('/')[0] : ""; }
-              
-              const formatBase64 = (data) => {
-                if (!data || data.length < 10) return null;
-                if (data.startsWith('data:')) return data;
-                let mime = "image/jpeg";
-                if (data.startsWith('iVBORw')) mime = "image/png";
-                else if (data.startsWith('PHN2Zw')) mime = "image/svg+xml";
-                else if (data.startsWith('R0lGOD')) mime = "image/gif";
-                return `data:${mime};base64,${data}`;
-              };
-
-              const imageData = h.imageData || h.ImageData;
-              const hostLogo = h.hostLogo || h.HostLogo;
-
-              const logoSrc = formatBase64(imageData) || 
-                              formatBase64(hostLogo) || 
-                              (domain ? `https://logo.clearbit.com/${domain}` : `https://api.dicebear.com/9.x/shapes/svg?seed=${encodeURIComponent(companyName)}`);
+              const logoSrc = getLogoSrc(h);
               const formatPrize = (h.prizePool !== null && h.prizePool !== undefined && h.prizePool !== "") ? `$${Number(h.prizePool).toLocaleString()}` : "TBA";
               return (
                 <Card key={index} hackathonId={hId} logo={logoSrc} company={companyName} websiteLink={h.websiteLink} eventDate={h.eventDate} title={h.hackathonName} mode={h.mode} type={h.hackathonType} participationType={h.participationType} duration={formatPrize} subtitle="Prize Money" actionText="Applied" disabled={true} />
@@ -525,31 +508,12 @@ const Profile = () => {
             savedHackathons.map((h, index) => {
               const companyName = h.organizationName || h.hostName || "Host";
               const hId = h.hackathonID || h.hackathonId || h.HostHackathonID;
+              const logoSrc = getLogoSrc(h);
               
               const isApplied = appliedHackathons.some(a => {
                 const aId = a.hackathonId || a.hackathonID || a.HostHackathonID;
                 return Number(aId) === Number(hId);
               });
-
-              let domain = "";
-              try { domain = h.websiteLink ? new URL(h.websiteLink).hostname : ""; } catch (e) { domain = h.websiteLink ? h.websiteLink.replace(/^https?:\/\//i,'').split('/')[0] : ""; }
-              
-              const formatBase64 = (data) => {
-                if (!data || data.length < 10) return null;
-                if (data.startsWith('data:')) return data;
-                let mime = "image/jpeg";
-                if (data.startsWith('iVBORw')) mime = "image/png";
-                else if (data.startsWith('PHN2Zw')) mime = "image/svg+xml";
-                else if (data.startsWith('R0lGOD')) mime = "image/gif";
-                return `data:${mime};base64,${data}`;
-              };
-
-              const imageData = h.imageData || h.ImageData;
-              const hostLogo = h.hostLogo || h.HostLogo;
-
-              const logoSrc = formatBase64(imageData) || 
-                              formatBase64(hostLogo) || 
-                              (domain ? `https://logo.clearbit.com/${domain}` : `https://api.dicebear.com/9.x/shapes/svg?seed=${encodeURIComponent(companyName)}`);
               
               const formatPrize = (h.prizePool !== null && h.prizePool !== undefined && h.prizePool !== "") ? `$${Number(h.prizePool).toLocaleString()}` : "TBA";
               

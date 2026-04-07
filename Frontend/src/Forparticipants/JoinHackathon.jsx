@@ -4,6 +4,7 @@ import { api } from '../services/api';
 import { getUserId } from '../utils/auth';
 import Card from '../Card';
 import HackathonDetailsModal from '../HackathonDetailsModal';
+import { getLogoSrc } from '../utils/imageUtils';
 
 
 const JoinHackathon = () => {
@@ -133,34 +134,7 @@ const JoinHackathon = () => {
               {filteredHackathons.map((h, index) => {
                 const isRecent = new Date(h.eventDate) > new Date() ? "UPCOMING" : "ENDED";
                 
-                const companyName = h.organizationName || h.hostName || "Host";
-                const hId = h.hackathonID || h.hackathonId;
-                
-                let domain = "";
-                try { domain = h.websiteLink ? new URL(h.websiteLink).hostname : ""; } catch (e) { domain = h.websiteLink ? h.websiteLink.replace(/^https?:\/\//i,'').split('/')[0] : ""; }
-
-                // Helper to format Base64 image data correctly
-                const formatBase64 = (data) => {
-                  if (!data || data.length < 10) return null;
-                  if (data.startsWith('data:')) return data;
-                  
-                  // Detect mime type from Base64 header
-                  let mime = "image/jpeg"; // Default
-                  if (data.startsWith('iVBORw')) mime = "image/png";
-                  else if (data.startsWith('PHN2Zw')) mime = "image/svg+xml";
-                  else if (data.startsWith('R0lGOD')) mime = "image/gif";
-                  
-                  return `data:${mime};base64,${data}`;
-                };
-
-                const imageData = h.imageData || h.ImageData;
-                const hostLogo = h.hostLogo || h.HostLogo;
-                
-
-                // Organization logo - Prioritize the specific hackathon image (uploaded as 'Logo' in form)
-                const logoSrc = formatBase64(imageData) || 
-                                formatBase64(hostLogo) || 
-                                (domain ? `https://logo.clearbit.com/${domain}` : `https://api.dicebear.com/9.x/shapes/svg?seed=${encodeURIComponent(companyName)}`);
+                const logoSrc = getLogoSrc(h);
                 
                 const formatPrize = h.prizePool ? `$${Number(h.prizePool).toLocaleString()}` : "No Prize";
                 const isApplied = appliedIds.includes(Number(hId));

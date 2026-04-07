@@ -1,6 +1,7 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { IoClose, IoCalendarOutline, IoLocationOutline, IoPeopleOutline, IoTrophyOutline, IoGlobeOutline } from "react-icons/io5";
+import { getLogoSrc } from "./utils/imageUtils";
 
 const HackathonDetailsModal = ({ hackathon, onClose, onApply }) => {
   if (!hackathon) return null;
@@ -81,9 +82,9 @@ const HackathonDetailsModal = ({ hackathon, onClose, onApply }) => {
             {/* Organizer & Official Link Info */}
             <div className="p-8 rounded-[2rem] bg-slate-900 border border-white/5 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl">
                <div className="flex items-center gap-5">
-                  <div className="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center border border-white/5 p-2">
+                  <div className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center border border-white/5 p-2 overflow-hidden">
                      <img 
-                        src={`https://api.dicebear.com/9.x/shapes/svg?seed=${encodeURIComponent(hackathon.organizationName || 'Host')}`} 
+                        src={getLogoSrc(hackathon)} 
                         className="w-full h-full object-contain" 
                         alt="Organizer" 
                      />
