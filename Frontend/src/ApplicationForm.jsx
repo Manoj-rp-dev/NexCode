@@ -27,16 +27,21 @@ const ApplicationForm = ({ hackathon, onClose }) => {
     if (!participantId) return;
     
     // Fetch pre-fill data
-    const fetchProfile = async () => {
+    const fetchProfileData = async () => {
       setLoading(true);
       try {
-        const data = await api.participant.getProfile(participantId);
+        const [coreData, editedData] = await Promise.all([
+          api.participant.getProfile(participantId),
+          api.participant.getEditedProfile(participantId).catch(() => ({}))
+        ]);
+        
         setFormData(prev => ({
           ...prev,
-          name: data.name || "",
-          email: data.email || "",
-          degree: data.qualification || "",
-          college: data.college || "" // Now returned by the API
+          name: coreData.name || "",
+          email: coreData.email || "",
+          degree: coreData.qualification || "",
+          college: coreData.college || "",
+          portfolio: editedData.github || editedData.Github || ""
         }));
       } catch (error) {
         console.error("Failed to fetch profile pre-fill data", error);
@@ -45,7 +50,7 @@ const ApplicationForm = ({ hackathon, onClose }) => {
       }
     };
     
-    fetchProfile();
+    fetchProfileData();
   }, [participantId]);
 
   // Adjust team members array based on requirement
