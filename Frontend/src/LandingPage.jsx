@@ -29,6 +29,17 @@ export default function App() {
     }
   };
 
+  const handleApply = () => {
+    if (!role) {
+      navigate('/signup');
+    } else if (role === 'participant') {
+      navigate('/Hero');
+    } else {
+      // For hosts or other roles, navigate to their dashboard or appropriate page
+      navigate('/host');
+    }
+  };
+
   const features = [
     { icon: <FiTrendingUp />, title: "Real-Time Updates", text: "Track hackathons worldwide instantly." },
     { icon: <FiCalendar />, title: "Event Calendar", text: "Explore upcoming competitions easily." },
@@ -206,7 +217,7 @@ export default function App() {
                 subtitle="prize pool"
                 tags={h.tags}
                 onViewDetails={() => navigate('/Hero')}
-                onApply={() => navigate('/Hero')}
+                onApply={handleApply}
               />
             ))}
           </div>
