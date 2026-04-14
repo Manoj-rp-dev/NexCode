@@ -120,7 +120,7 @@ const Card = (props) => {
             className="flex-1 h-14 rounded-2xl font-black text-xs uppercase tracking-wider transition-all cursor-pointer border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-950 hover:text-slate-950 dark:hover:text-white hover:border-violet-500/40 flex items-center justify-center gap-2 group/btn whitespace-nowrap"
           >
             <Info size={14} className="text-violet-500 opacity-60 group-hover/btn:opacity-100 transition-opacity flex-shrink-0" /> View Details
-          </button>
+            </button>
           
           <button 
             onClick={props.onApply}
