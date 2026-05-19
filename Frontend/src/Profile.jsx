@@ -266,7 +266,7 @@ const Profile = () => {
                     : 'bg-white/5 text-slate-400 border border-white/5 hover:bg-white/10 hover:text-white'
                 } relative cursor-pointer border`}
               >
-                <IoNotificationsCircleOutline size={30} className="sm:size-6" />
+                <IoNotificationsCircleOutline size={35} className="sm:size-6" />
                 {visibleNotifications.length > 0 && !showNotifications && (
                   <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 border-2 border-[#0a0a0a] rounded-full animate-pulse shadow-sm shadow-red-500/50"></span>
                 )}
