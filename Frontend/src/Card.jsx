@@ -116,19 +116,25 @@ const Card = (props) => {
       <div className='mt-8 pt-6 border-t border-slate-200 dark:border-slate-800/50 flex flex-col gap-3'>
         <div className='flex gap-4'>
           <button 
-            onClick={props.onViewDetails}
-            className="flex-1 h-14 rounded-2xl font-black text-xs uppercase tracking-wider transition-all cursor-pointer border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-950 hover:text-slate-950 dark:hover:text-white hover:border-violet-500/40 flex items-center justify-center gap-2 group/btn whitespace-nowrap"
+            onClick={props.readOnly ? undefined : props.onViewDetails}
+            className={`flex-1 h-14 rounded-2xl font-black text-xs uppercase tracking-wider transition-all border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center gap-2 group/btn whitespace-nowrap ${
+              props.readOnly
+                ? 'cursor-not-allowed opacity-50 bg-slate-50/50 dark:bg-slate-900/50'
+                : 'cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-950 hover:text-slate-950 dark:hover:text-white hover:border-violet-500/40'
+            }`}
           >
             <Info size={14} className="text-violet-500 opacity-60 group-hover/btn:opacity-100 transition-opacity flex-shrink-0" /> View Details
             </button>
           
           <button 
-            onClick={props.onApply}
-            disabled={props.disabled}
-            className={`flex-1 h-14 rounded-2xl font-black text-xs uppercase tracking-widest transition-all cursor-pointer border shadow-lg ${
+            onClick={props.readOnly ? undefined : props.onApply}
+            disabled={props.disabled || props.readOnly}
+            className={`flex-1 h-14 rounded-2xl font-black text-xs uppercase tracking-widest transition-all border shadow-lg ${
             props.disabled 
               ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20 cursor-default shadow-none translate-y-0 opacity-80' 
-              : 'bg-slate-900 dark:bg-white text-white dark:text-slate-950 border-slate-900 dark:border-white hover:bg-violet-600 dark:hover:bg-violet-600 hover:text-white dark:hover:text-white active:scale-[0.98] hover:-translate-y-1'
+              : props.readOnly
+              ? 'bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 border-slate-200 dark:border-slate-800 cursor-not-allowed shadow-none'
+              : 'bg-slate-900 dark:bg-white text-white dark:text-slate-950 border-slate-900 dark:border-white cursor-pointer hover:bg-violet-600 dark:hover:bg-violet-600 hover:text-white dark:hover:text-white active:scale-[0.98] hover:-translate-y-1'
           }`}>
             {props.disabled ? "Applied" : "Apply Now"}
           </button>
