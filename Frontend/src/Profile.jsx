@@ -260,15 +260,15 @@ const Profile = () => {
           <div className="relative">
               <button 
                 onClick={() => setShowNotifications(!showNotifications)}
-                className={`w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center transition-all ${
+                className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center transition-all ${
                   showNotifications 
-                    ? 'bg-violet-600 text-white shadow-[0_0_20px_rgba(139,92,246,0.4)] border-violet-500/50' 
-                    : 'bg-white/5 text-slate-400 border border-white/5 hover:bg-white/10 hover:text-white'
-                } relative cursor-pointer border`}
+                    ? 'bg-violet-600 text-white shadow-[0_0_20px_rgba(139,92,246,0.4)]' 
+                    : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-violet-600 dark:hover:text-fuchsia-400'
+                } relative cursor-pointer`}
               >
                 <IoNotificationsCircleOutline size={35} className="sm:size-6" />
                 {visibleNotifications.length > 0 && !showNotifications && (
-                  <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 border-2 border-[#0a0a0a] rounded-full animate-pulse shadow-sm shadow-red-500/50"></span>
+                  <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 border-2 border-white dark:border-[#0a0a0a] rounded-full animate-pulse shadow-sm shadow-red-500/50"></span>
                 )}
               </button>
 
@@ -322,7 +322,7 @@ const Profile = () => {
             setEditImage(null);
             setEditImageFile(null);
             setVisible(true);
-          }} className="p-2.5 sm:p-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-violet-600 dark:hover:text-fuchsia-400 transition-colors">
+          }} className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-violet-600 dark:hover:text-fuchsia-400 transition-colors cursor-pointer">
             <BiSolidEdit size={24} className="sm:size-7" />
           </button>
 
