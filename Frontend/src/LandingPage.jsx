@@ -259,27 +259,45 @@ export default function App() {
       </section>
 
       {/* TESTIMONIALS */}
-      <section className="py-24 bg-white dark:bg-slate-900 px-6 transition-colors duration-500 relative overflow-hidden text-center">
-        <div className="max-w-4xl mx-auto relative z-10">
-          <h2 className="text-4xl font-bold text-slate-900 dark:text-white mb-16 uppercase tracking-widest">Community Voice</h2>
+      <section className="py-24 bg-slate-50 dark:bg-slate-950 px-6 transition-colors duration-500 relative overflow-hidden text-center border-t border-slate-200 dark:border-white/5">
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-cyan-500/10 dark:bg-cyan-500/5 blur-[100px] rounded-full pointer-events-none"></div>
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="mb-16">
+            <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-4">
+              Community <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-violet-500">Voice</span>
+            </h2>
+            <p className="text-slate-600 dark:text-slate-400 text-lg max-w-2xl mx-auto">
+              Hear from developers and hosts who are transforming the way they build and collaborate.
+            </p>
+          </div>
           
           <div className="grid md:grid-cols-2 gap-8">
             {testimonials.map((t, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-                className="bg-slate-50 dark:bg-slate-800/40 p-10 rounded-[3rem] text-left border border-slate-200 dark:border-white/5 relative"
+                transition={{ delay: i * 0.1, duration: 0.5 }}
+                className="group relative p-[1px] rounded-3xl bg-gradient-to-b from-slate-200 to-transparent dark:from-white/10 dark:to-transparent overflow-hidden shadow-sm hover:shadow-xl dark:shadow-none dark:hover:shadow-[0_0_30px_rgba(139,92,246,0.1)] transition-all duration-300"
               >
-                <div className="text-violet-500 text-5xl font-serif absolute top-6 right-8 opacity-20">"</div>
-                <p className="text-lg italic text-slate-600 dark:text-slate-300 mb-8 leading-relaxed font-medium">
-                  "{t.text}"
-                </p>
-                <div>
-                  <h4 className="text-slate-900 dark:text-white font-black text-xl">{t.name}</h4>
-                  <p className="text-violet-600 dark:text-violet-400 text-sm font-bold tracking-tight uppercase">{t.role}</p>
+                <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 to-cyan-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="relative h-full bg-white dark:bg-slate-900/90 backdrop-blur-sm p-10 rounded-3xl text-left border border-transparent flex flex-col justify-between">
+                  <div>
+                    <div className="text-4xl text-violet-500 dark:text-cyan-400 mb-6 font-serif opacity-50">"</div>
+                    <p className="text-xl text-slate-700 dark:text-slate-300 mb-8 leading-relaxed font-light">
+                      {t.text}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-4 mt-auto">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-violet-500 to-cyan-500 flex items-center justify-center text-white font-bold text-lg shadow-lg">
+                      {t.name.charAt(0)}
+                    </div>
+                    <div>
+                      <h4 className="text-slate-900 dark:text-white font-bold text-lg">{t.name}</h4>
+                      <p className="text-violet-600 dark:text-cyan-400 text-sm font-medium tracking-wide uppercase">{t.role}</p>
+                    </div>
+                  </div>
                 </div>
               </motion.div>
             ))}
