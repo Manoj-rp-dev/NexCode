@@ -990,24 +990,24 @@ const HostProfile = () => {
                                 const email = (a.email || "").toLowerCase().trim();
                                 return name.includes(s) || email.includes(s);
                             }).map((app, idx) => (
-                                <motion.div key={idx} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.05 }} className='bg-[#0f0f0f] border border-white/5 rounded-2xl sm:rounded-[3rem] p-5 sm:p-8 flex flex-col relative group overflow-hidden shadow-2xl hover:border-violet-600/40 transition-all'>
+                                <motion.div key={idx} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.05 }} className='bg-white dark:bg-[#0f0f0f] border border-slate-200 dark:border-white/5 rounded-2xl sm:rounded-[3rem] p-5 sm:p-8 flex flex-col relative group overflow-hidden shadow-2xl hover:border-violet-600/40 transition-all text-slate-900 dark:text-white'>
                                     <div className='flex items-start gap-6 relative z-10'>
-                                        <div className='w-16 h-16 sm:w-24 sm:h-24 rounded-xl sm:rounded-[2rem] bg-black border-2 border-white/5 overflow-hidden flex items-center justify-center shadow-lg group-hover:border-violet-600 transition-all shrink-0'>
-                                            {app.profileImage ? <img src={`data:image/jpeg;base64,${app.profileImage}`} className="w-full h-full object-cover" alt="avatar" /> : <span className='text-3xl font-black text-slate-700 group-hover:text-white'>{app.fullName.charAt(0)}</span>}
+                                        <div className='w-16 h-16 sm:w-24 sm:h-24 rounded-xl sm:rounded-[2rem] bg-slate-100 dark:bg-black border-2 border-slate-200 dark:border-white/5 overflow-hidden flex items-center justify-center shadow-lg group-hover:border-violet-600 transition-all shrink-0'>
+                                            {app.profileImage ? <img src={`data:image/jpeg;base64,${app.profileImage}`} className="w-full h-full object-cover" alt="avatar" /> : <span className='text-3xl font-black text-slate-400 dark:text-slate-700 group-hover:text-slate-900 dark:group-hover:text-white'>{app.fullName.charAt(0)}</span>}
                                         </div>
                                         <div className='flex-1 min-w-0'>
                                             <div className='flex items-center justify-between'><h3 className='text-2xl font-bold uppercase tracking-tighter truncate'>{app.fullName}</h3><div className='flex items-center gap-1.5 px-3 py-1 bg-violet-600/10 text-violet-400 rounded-full border border-violet-600/20'><Zap size={10} className='fill-current'/><span className='text-[9px] font-black uppercase tracking-widest'>{app.skills}</span></div></div>
                                             <p className='text-sm font-bold text-slate-500 mt-1 truncate'>{app.email}</p>
                                             <div className='flex items-center gap-4 mt-4'>
-                                                <a href={app.githubLink} target="_blank" className='p-2.5 bg-white/5 text-slate-400 rounded-xl hover:text-white transition-all'><Github size={18}/></a>
-                                                <a href={app.portfolioUrl} target="_blank" className='p-2.5 bg-white/5 text-slate-400 rounded-xl hover:text-white transition-all'><ExternalLink size={18}/></a>
-                                                <button onClick={() => { navigator.clipboard.writeText(app.email); toast.success("ID Copied"); }} className='p-2.5 bg-white/5 text-slate-400 rounded-xl hover:text-white transition-all'><IoMailOutline size={18}/></button>
+                                                <a href={app.githubLink} target="_blank" className='p-2.5 bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-slate-400 rounded-xl hover:text-slate-900 dark:hover:text-white transition-all'><Github size={18}/></a>
+                                                <a href={app.portfolioUrl} target="_blank" className='p-2.5 bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-slate-400 rounded-xl hover:text-slate-900 dark:hover:text-white transition-all'><ExternalLink size={18}/></a>
+                                                <button onClick={() => { navigator.clipboard.writeText(app.email); toast.success("ID Copied"); }} className='p-2.5 bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-slate-400 rounded-xl hover:text-slate-900 dark:hover:text-white transition-all'><IoMailOutline size={18}/></button>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className='grid grid-cols-2 gap-4 mt-8 pt-8 border-t border-white/5'>
-                                        <div className='bg-black/40 p-5 rounded-3xl border border-white/5 group-hover:bg-violet-600/5 transition-all mb-4'><div className='flex items-center gap-3 mb-2 opacity-50'><Layers size={14} className='text-violet-400'/><span className='text-[9px] font-black uppercase tracking-widest text-slate-400'>Total Protocols</span></div><p className='text-2xl font-black text-white leading-none'>{app.totalParticipated || app.TotalParticipated || 0} <span className='text-[10px] text-slate-600'>NODES</span></p></div>
-                                        <div className='bg-black/40 p-5 rounded-3xl border border-white/5 group-hover:bg-emerald-600/5 transition-all mb-4'><div className='flex items-center gap-3 mb-2 opacity-50'><Award size={14} className='text-emerald-400'/><span className='text-[9px] font-black uppercase tracking-widest text-slate-400'>Victories Secured</span></div><p className='text-2xl font-black text-white leading-none'>{app.totalWins || app.TotalWins || 0} <span className='text-[10px] text-slate-600'>WINS</span></p></div>
+                                    <div className='grid grid-cols-2 gap-4 mt-8 pt-8 border-t border-slate-200 dark:border-white/5'>
+                                        <div className='bg-slate-50 dark:bg-black/40 p-5 rounded-3xl border border-slate-200 dark:border-white/5 group-hover:bg-violet-600/5 transition-all mb-4'><div className='flex items-center gap-3 mb-2 opacity-50'><Layers size={14} className='text-violet-500 dark:text-violet-400'/><span className='text-[9px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400'>Total Protocols</span></div><p className='text-2xl font-black text-slate-900 dark:text-white leading-none'>{app.totalParticipated || app.TotalParticipated || 0} <span className='text-[10px] text-slate-500 dark:text-slate-600'>NODES</span></p></div>
+                                        <div className='bg-slate-50 dark:bg-black/40 p-5 rounded-3xl border border-slate-200 dark:border-white/5 group-hover:bg-emerald-600/5 transition-all mb-4'><div className='flex items-center gap-3 mb-2 opacity-50'><Award size={14} className='text-emerald-500 dark:text-emerald-400'/><span className='text-[9px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400'>Victories Secured</span></div><p className='text-2xl font-black text-slate-900 dark:text-white leading-none'>{app.totalWins || app.TotalWins || 0} <span className='text-[10px] text-slate-500 dark:text-slate-600'>WINS</span></p></div>
                                     </div>
                                     <button 
                                       onClick={() => { setSelectedApp(app); setIsDetailsModalOpen(true); }}
@@ -1032,29 +1032,29 @@ const HostProfile = () => {
       {/* CANDIDATE DOSSIER MODAL */}
       <AnimatePresence>
         {isDetailsModalOpen && selectedApp && (
-          <div className="fixed inset-0 z-[150] flex items-center justify-center p-4 sm:p-6 bg-black/90 backdrop-blur-xl">
+          <div className="fixed inset-0 z-[150] flex items-center justify-center p-4 sm:p-6 bg-slate-900/40 dark:bg-black/90 backdrop-blur-xl">
             <motion.div 
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              className="w-full max-w-4xl max-h-[90vh] bg-[#0a0a0a] border border-white/10 rounded-[2.5rem] overflow-hidden shadow-2xl flex flex-col"
+              className="w-full max-w-4xl max-h-[90vh] bg-white dark:bg-[#0a0a0a] border border-slate-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-2xl flex flex-col text-slate-900 dark:text-white"
             >
               {/* Modal Header */}
-              <div className="p-8 border-b border-white/5 flex items-center justify-between bg-gradient-to-r from-violet-600/10 to-transparent">
+              <div className="p-8 border-b border-slate-200 dark:border-white/5 flex items-center justify-between bg-gradient-to-r from-violet-50 dark:from-violet-600/10 to-transparent">
                 <div className="flex items-center gap-6">
-                  <div className="w-16 h-16 bg-slate-900 border-2 border-violet-600/30 rounded-2xl flex items-center justify-center overflow-hidden">
+                  <div className="w-16 h-16 bg-slate-100 dark:bg-slate-900 border-2 border-violet-600/30 rounded-2xl flex items-center justify-center overflow-hidden">
                     {selectedApp.profileImage ? (
                       <img src={`data:image/jpeg;base64,${selectedApp.profileImage}`} className="w-full h-full object-cover" alt="avatar" />
                     ) : (
-                      <span className="text-2xl font-black text-white">{selectedApp.fullName?.charAt(0)}</span>
+                      <span className="text-2xl font-black text-slate-900 dark:text-white">{selectedApp.fullName?.charAt(0)}</span>
                     )}
                   </div>
                   <div>
-                    <h2 className="text-2xl font-bold uppercase tracking-tighter">{selectedApp.fullName}</h2>
-                    <p className="text-[10px] text-violet-400 font-bold uppercase tracking-widest">{selectedApp.collegeName || 'Independent Participant'}</p>
+                    <h2 className="text-2xl font-bold uppercase tracking-tighter text-slate-900 dark:text-white">{selectedApp.fullName}</h2>
+                    <p className="text-[10px] text-violet-600 dark:text-violet-400 font-bold uppercase tracking-widest">{selectedApp.collegeName || 'Independent Participant'}</p>
                   </div>
                 </div>
-                <button onClick={() => setIsDetailsModalOpen(false)} className="w-12 h-12 flex items-center justify-center bg-white/5 text-slate-500 rounded-2xl hover:bg-red-600 hover:text-white transition-all">
+                <button onClick={() => setIsDetailsModalOpen(false)} className="w-12 h-12 flex items-center justify-center bg-slate-100 dark:bg-white/5 text-slate-500 rounded-2xl hover:bg-red-600 hover:text-white transition-all">
                   <IoClose size={24} />
                 </button>
               </div>
@@ -1068,25 +1068,25 @@ const HostProfile = () => {
                       <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
                         <FileText size={14} className="text-violet-500"/> Mission Motivation
                       </h3>
-                      <div className="p-6 bg-white/5 border border-white/5 rounded-3xl text-sm text-slate-300 leading-relaxed italic">
+                      <div className="p-6 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5 rounded-3xl text-sm text-slate-700 dark:text-slate-300 leading-relaxed italic">
                         "{selectedApp.motivation || 'No motivation statement provided.'}"
                       </div>
                     </section>
 
                     <div className="grid grid-cols-2 gap-6">
-                      <div className="p-6 bg-white/5 border border-white/5 rounded-3xl">
+                      <div className="p-6 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5 rounded-3xl">
                         <p className="text-[9px] font-semibold uppercase tracking-widest text-slate-500 mb-2">Primary Stack</p>
-                        <p className="text-sm font-bold text-white uppercase tracking-tight">{selectedApp.skills || 'Generalist'}</p>
+                        <p className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-tight">{selectedApp.skills || 'Generalist'}</p>
                       </div>
-                      <div className="p-6 bg-white/5 border border-white/5 rounded-3xl">
+                      <div className="p-6 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5 rounded-3xl">
                         <p className="text-[9px] font-semibold uppercase tracking-widest text-slate-500 mb-2">Applied At</p>
-                        <p className="text-sm font-bold text-white uppercase tracking-tight">{new Date(selectedApp.appliedAt).toLocaleString()}</p>
+                        <p className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-tight">{new Date(selectedApp.appliedAt).toLocaleString()}</p>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-4">
                       {selectedApp.githubLink && (
-                        <a href={selectedApp.githubLink} target="_blank" className="flex-1 py-4 bg-[#171515] border border-white/5 rounded-2xl flex items-center justify-center gap-3 text-white font-bold text-[10px] uppercase tracking-widest hover:bg-black transition-all">
+                        <a href={selectedApp.githubLink} target="_blank" className="flex-1 py-4 bg-slate-900 dark:bg-[#171515] border border-slate-800 dark:border-white/5 rounded-2xl flex items-center justify-center gap-3 text-white font-bold text-[10px] uppercase tracking-widest hover:bg-slate-800 dark:hover:bg-black transition-all">
                           <IoLogoGithub size={18}/> GitHub Repository
                         </a>
                       )}
@@ -1107,7 +1107,7 @@ const HostProfile = () => {
                       <div className="space-y-4">
                         <div className="p-5 bg-violet-600/5 border border-violet-600/20 rounded-2xl relative overflow-hidden group">
                           <div className="absolute top-0 right-0 p-2 text-[8px] font-black bg-violet-600 text-white rounded-bl-xl uppercase tracking-widest">LEAD</div>
-                          <p className="text-xs font-bold uppercase tracking-tighter">{selectedApp.fullName}</p>
+                          <p className="text-xs font-bold uppercase tracking-tighter text-slate-900 dark:text-white">{selectedApp.fullName}</p>
                           <p className="text-[10px] text-slate-500 font-bold break-all mt-1">{selectedApp.email}</p>
                         </div>
 
@@ -1115,9 +1115,9 @@ const HostProfile = () => {
                           try {
                             const partners = selectedApp.teamMembers ? JSON.parse(selectedApp.teamMembers) : [];
                             return partners.map((m, i) => (
-                              <div key={i} className="p-5 bg-white/5 border border-white/5 rounded-2xl group hover:border-violet-600/30 transition-all">
-                                <p className="text-xs font-black text-slate-300 uppercase tracking-tighter group-hover:text-white transition-colors">{m.name}</p>
-                                <p className="text-[10px] text-slate-600 font-bold break-all mt-1 group-hover:text-slate-400 transition-colors">{m.email}</p>
+                              <div key={i} className="p-5 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5 rounded-2xl group hover:border-violet-500/30 dark:hover:border-violet-600/30 transition-all">
+                                <p className="text-xs font-black text-slate-700 dark:text-slate-300 uppercase tracking-tighter group-hover:text-slate-900 dark:group-hover:text-white transition-colors">{m.name}</p>
+                                <p className="text-[10px] text-slate-500 dark:text-slate-600 font-bold break-all mt-1 group-hover:text-slate-700 dark:group-hover:text-slate-400 transition-colors">{m.email}</p>
                               </div>
                             ));
                           } catch (e) {
@@ -1127,21 +1127,21 @@ const HostProfile = () => {
                       </div>
                     </section>
 
-                    <section className="p-6 bg-black/40 border border-white/5 rounded-3xl">
+                    <section className="p-6 bg-slate-50 dark:bg-black/40 border border-slate-200 dark:border-white/5 rounded-3xl">
                       <div className="flex items-center justify-between mb-4">
                         <span className="text-[9px] font-semibold uppercase tracking-widest text-slate-500">Status Log</span>
-                        <span className={`px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest ${selectedApp.status === 'Approved' ? 'bg-emerald-600/20 text-emerald-400' : (selectedApp.status === 'Rejected' ? 'bg-red-600/20 text-red-400' : 'bg-orange-600/20 text-orange-400')}`}>
+                        <span className={`px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest ${selectedApp.status === 'Approved' ? 'bg-emerald-600/20 text-emerald-600 dark:text-emerald-400' : (selectedApp.status === 'Rejected' ? 'bg-red-600/20 text-red-600 dark:text-red-400' : 'bg-orange-600/20 text-orange-600 dark:text-orange-400')}`}>
                           {selectedApp.status || 'Pending'}
                         </span>
                       </div>
                       <div className="space-y-2">
                         <div className="flex justify-between text-[10px] font-bold">
-                          <span className="text-slate-600">Total Protocols</span>
-                          <span className="text-white">{selectedApp.totalParticipated}</span>
+                          <span className="text-slate-500 dark:text-slate-600">Total Protocols</span>
+                          <span className="text-slate-900 dark:text-white">{selectedApp.totalParticipated}</span>
                         </div>
                         <div className="flex justify-between text-[10px] font-bold">
-                          <span className="text-slate-600">Victories</span>
-                          <span className="text-emerald-500">{selectedApp.totalWins}</span>
+                          <span className="text-slate-500 dark:text-slate-600">Victories</span>
+                          <span className="text-emerald-600 dark:text-emerald-500">{selectedApp.totalWins}</span>
                         </div>
                       </div>
                     </section>

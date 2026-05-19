@@ -370,9 +370,9 @@ const Profile = () => {
         </div>
       )}
 
-      <div className='relative overflow-hidden w-[95vw] lg:w-full max-w-7xl mx-auto h-32 md:h-40 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/5 flex items-center pt-12 shadow-lg mt-12 mb-8'>
+      <div className='relative overflow-hidden w-[95vw] lg:w-full max-w-7xl mx-auto min-h-[8rem] md:min-h-[10rem] py-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/5 flex flex-col items-center justify-center shadow-lg mt-12 mb-8'>
         <div className="absolute top-[-50%] left-[-10%] w-[500px] h-[500px] bg-fuchsia-500/10 dark:bg-fuchsia-500/10 blur-[100px] rounded-full pointer-events-none mix-blend-multiply dark:mix-blend-screen"></div>
-        <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }} className="relative z-10 px-8 md:px-12">
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="relative z-10 px-8 md:px-12 flex flex-col items-center text-center">
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white tracking-tight">
             Welcome back, <span className='text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-fuchsia-500 dark:from-fuchsia-400 dark:to-cyan-400'>{name || "Hacker"}</span>
           </h2>
@@ -485,7 +485,7 @@ const Profile = () => {
               const logoSrc = getLogoSrc(h);
               const formatPrize = (h.prizePool !== null && h.prizePool !== undefined && h.prizePool !== "") ? `$${Number(h.prizePool).toLocaleString()}` : "TBA";
               return (
-                <Card key={index} hackathonId={hId} logo={logoSrc} company={companyName} websiteLink={h.websiteLink} eventDate={h.eventDate} title={h.hackathonName} mode={h.mode} type={h.hackathonType} participationType={h.participationType} duration={formatPrize} subtitle="Prize Money" actionText="Applied" disabled={true} />
+                <Card key={index} hackathonId={hId} logo={logoSrc} company={companyName} websiteLink={h.websiteLink} eventDate={h.eventDate} title={h.hackathonName} mode={h.mode} type={h.hackathonType} participationType={h.participationType} duration={formatPrize} subtitle="Prize Money" actionText="Applied" disabled={true} onViewDetails={() => setViewDetailsHackathon(h)} />
               );
             })
           }
