@@ -370,7 +370,7 @@ const Profile = () => {
         </div>
       )}
 
-      <div className='relative overflow-hidden w-[95vw] lg:w-full max-w-7xl mx-auto h-32 md:h-40 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/5 flex items-center shadow-lg mb-8'>
+      <div className='relative overflow-hidden w-[95vw] lg:w-full max-w-7xl mx-auto h-32 md:h-40 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/5 flex items-center mt-10 shadow-lg mb-8'>
         <div className="absolute top-[-50%] left-[-10%] w-[500px] h-[500px] bg-fuchsia-500/10 dark:bg-fuchsia-500/10 blur-[100px] rounded-full pointer-events-none mix-blend-multiply dark:mix-blend-screen"></div>
         <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }} className="relative z-10 px-8 md:px-12">
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white tracking-tight">
