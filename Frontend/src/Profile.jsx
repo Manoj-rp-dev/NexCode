@@ -331,7 +331,7 @@ const Profile = () => {
           </button>
         </div>
       </div>
-      <div className='h-20' />
+
       
       {visible && (
         <div className='fixed inset-0 z-50 flex justify-end bg-slate-900/20 dark:bg-black/40 backdrop-blur-sm transition-all'>
@@ -370,7 +370,7 @@ const Profile = () => {
         </div>
       )}
 
-      <div className='relative overflow-hidden w-[95vw] lg:w-full max-w-7xl mx-auto h-32 md:h-40 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/5 flex items-center pt-15 shadow-lg mb-8'>
+      <div className='relative overflow-hidden w-[95vw] lg:w-full max-w-7xl mx-auto h-32 md:h-40 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/5 flex items-center pt-12 shadow-lg mt-12 mb-8'>
         <div className="absolute top-[-50%] left-[-10%] w-[500px] h-[500px] bg-fuchsia-500/10 dark:bg-fuchsia-500/10 blur-[100px] rounded-full pointer-events-none mix-blend-multiply dark:mix-blend-screen"></div>
         <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }} className="relative z-10 px-8 md:px-12">
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white tracking-tight">
@@ -492,7 +492,7 @@ const Profile = () => {
         </div>
       </div>
 
-      <div className='max-w-7xl mx-auto px-6 lg:px-0 mt-16 pb-10'>
+      <div className='max-w-7xl mx-auto px-6 lg:px-0 mt-8 pb-4'>
         <div className="w-full flex items-center gap-3 mb-8 border-b border-slate-200 dark:border-white/5 pb-4">
           <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-violet-500" fill="currentColor" viewBox="0 0 24 24"><path d="M5 3a2 2 0 00-2 2v16l7-3 7 3V5a2 2 0 00-2-2H5z"/></svg>
           <h3 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Saved Hackathons</h3>
