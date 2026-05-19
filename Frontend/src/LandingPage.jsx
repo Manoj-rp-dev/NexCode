@@ -217,8 +217,6 @@ export default function App() {
                 subtitle="prize pool"
                 tags={h.tags}
                 readOnly={true}
-                onViewDetails={() => navigate('/Hero')}
-                onApply={handleApply}
               />
             ))}
           </div>
