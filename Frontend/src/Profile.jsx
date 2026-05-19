@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 import Logo from "./Forparticipants/Logo";
-import { IoNotificationsCircleOutline, IoSettingsOutline } from "react-icons/io5";
+import { IoNotificationsOutline, IoSettingsOutline } from "react-icons/io5";
 import { BiLogOutCircle, BiSolidEdit } from "react-icons/bi";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaProjectDiagram } from "react-icons/fa";
@@ -266,7 +266,7 @@ const Profile = () => {
                     : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-violet-600 dark:hover:text-fuchsia-400'
                 } relative cursor-pointer`}
               >
-                <IoNotificationsCircleOutline size={35} className="sm:size-6" />
+                <IoNotificationsOutline size={24} className="sm:size-7" />
                 {visibleNotifications.length > 0 && !showNotifications && (
                   <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 border-2 border-white dark:border-[#0a0a0a] rounded-full animate-pulse shadow-sm shadow-red-500/50"></span>
                 )}
