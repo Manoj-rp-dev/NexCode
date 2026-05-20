@@ -692,6 +692,10 @@ const HostProfile = () => {
                 <button onClick={() => { setActiveTab("solo_hackathons"); setSelectedHackathon(null); setApplicants([]); setMobileMenuOpen(false); }} className={`w-full flex items-center justify-between px-4 py-3.5 rounded-2xl transition-all ${activeTab === 'solo_hackathons' ? 'bg-blue-600 text-white shadow-xl shadow-blue-600/20' : 'hover:bg-slate-100 dark:hover:bg-white/5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'}`}>
                   <div className='flex items-center gap-3 font-bold text-sm'><User size={18}/> Solo Protocols</div>
                 </button>
+                <div className='text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-600 px-4 mb-4 mt-8'>Registry Controls</div>
+                <button onClick={() => { setActiveTab("talent"); setApplicants([]); setMobileMenuOpen(false); }} className={`w-full flex items-center justify-between px-4 py-3.5 rounded-2xl transition-all ${activeTab === 'talent' ? 'bg-violet-600 text-white shadow-xl shadow-violet-600/20' : 'hover:bg-slate-100 dark:hover:bg-white/5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'}`}>
+                  <div className='flex items-center gap-3 font-bold text-sm'><Users size={18} strokeWidth={2.5}/> Talent Nexus</div>
+                </button>
                 <button onClick={() => { setActiveTab("management"); setApplicants([]); setMobileMenuOpen(false); }} className={`w-full flex items-center justify-between px-4 py-3.5 rounded-2xl transition-all ${activeTab === 'management' ? 'bg-red-600 text-white shadow-xl shadow-red-600/20' : 'hover:bg-slate-100 dark:hover:bg-white/5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'}`}>
                   <div className='flex items-center gap-3 font-bold text-sm'><ShieldAlert size={18}/> Management Hub</div>
                 </button>
