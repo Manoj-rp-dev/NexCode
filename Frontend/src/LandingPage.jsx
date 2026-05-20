@@ -206,7 +206,7 @@ export default function App() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(350px,1fr))] gap-8">
             {featuredTasks.map((h, i) => (
               <Card
                 key={i}

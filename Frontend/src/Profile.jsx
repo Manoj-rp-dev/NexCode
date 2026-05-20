@@ -478,7 +478,7 @@ const Profile = () => {
           </select>
         </div>
 
-        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(350px,1fr))] gap-8">
           {appliedHackathons.filter(h => mode === "" || mode === "All" || (h.participationType && h.participationType.toLowerCase() === mode.toLowerCase())).map((h, index) => {
               const companyName = h.organizationName || h.hostName || "Host";
               const hId = h.hackathonId || h.hackathonID || h.HostHackathonID;
@@ -498,7 +498,7 @@ const Profile = () => {
           <h3 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Saved Hackathons</h3>
           <span className="ml-auto px-3 py-1 rounded-full bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300 text-xs font-bold">{savedHackathons.length} Saved</span>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(350px,1fr))] gap-8">
           {savedHackathons.length === 0 ? (
             <div className='col-span-full h-[200px] w-full rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/5 shadow-inner flex flex-col items-center justify-center p-8 text-center text-slate-400 gap-3'>
               <svg xmlns="http://www.w3.org/2000/svg" className="w-12 h-12 text-slate-200 dark:text-slate-700" fill="currentColor" viewBox="0 0 24 24"><path d="M5 3a2 2 0 00-2 2v16l7-3 7 3V5a2 2 0 00-2-2H5z"/></svg>
