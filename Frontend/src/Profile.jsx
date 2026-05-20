@@ -241,7 +241,7 @@ const Profile = () => {
   };
 
   return (
-    <div className='w-full min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-50 font-sans pb-10 transition-colors duration-500'>
+    <div className='w-full min-h-screen pt-32 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-50 font-sans pb-10 transition-colors duration-500'>
 
       <div className='h-20 w-full fixed top-0 z-50 bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-xl border-b border-slate-200 dark:border-white/5 flex justify-between items-center px-4 sm:px-10 shadow-sm dark:shadow-lg transition-all'>
         <div className="flex items-center gap-4 lg:gap-8 flex-1 min-w-0">
@@ -370,7 +370,7 @@ const Profile = () => {
         </div>
       )}
 
-      <div className='relative overflow-hidden w-[95vw] lg:w-full max-w-7xl mx-auto min-h-[8rem] md:min-h-[10rem] py-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/5 flex flex-col items-center justify-center shadow-lg mt-28 mb-8'>
+      <div className='relative overflow-hidden w-[95vw] lg:w-full max-w-7xl mx-auto min-h-[8rem] md:min-h-[10rem] py-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/5 flex flex-col items-center justify-center shadow-lg mb-8'>
         <div className="absolute top-[-50%] left-[-10%] w-[500px] h-[500px] bg-fuchsia-500/10 dark:bg-fuchsia-500/10 blur-[100px] rounded-full pointer-events-none mix-blend-multiply dark:mix-blend-screen"></div>
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="relative z-10 px-8 md:px-12 flex flex-col items-center text-center">
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white tracking-tight">
