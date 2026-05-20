@@ -46,7 +46,7 @@ const Card = (props) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
-      className='bg-white/80 dark:bg-slate-800/40 backdrop-blur-3xl p-8 md:p-10 rounded-[3rem] border border-slate-200/60 dark:border-white/20 transition-all duration-300 flex flex-col justify-between w-full sm:w-[380px] min-h-[460px] relative group hover:border-violet-600/50 shadow-xl dark:shadow-[0_20px_50px_-20px_rgba(0,0,0,0.5)] dark:hover:shadow-violet-600/10 overflow-hidden'
+      className='bg-white/80 dark:bg-slate-800/40 backdrop-blur-3xl p-8 md:p-10 rounded-[3rem] border border-slate-200/60 dark:border-white/20 transition-all duration-300 flex flex-col justify-between w-full min-h-[460px] relative group hover:border-violet-600/50 shadow-xl dark:shadow-[0_20px_50px_-20px_rgba(0,0,0,0.5)] dark:hover:shadow-violet-600/10 overflow-hidden'
     >
       {/* Background Glows */}
       <div className="absolute top-[-10%] left-[-10%] w-32 h-32 bg-violet-600/5 dark:bg-violet-600/15 blur-[50px] rounded-full pointer-events-none group-hover:bg-violet-600/10 dark:group-hover:bg-violet-600/25 transition-colors"></div>
