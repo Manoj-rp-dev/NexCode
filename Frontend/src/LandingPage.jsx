@@ -17,7 +17,7 @@ export default function App() {
     } else if (role === 'host') {
       navigate('/host');
     } else {
-      navigate('/join');
+      navigate('/');
     }
   };
 
